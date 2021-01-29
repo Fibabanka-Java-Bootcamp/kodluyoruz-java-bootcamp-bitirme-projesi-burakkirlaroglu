@@ -1,5 +1,6 @@
 package org.kodluyoruz.mybank.account;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.kodluyoruz.mybank.card.Card;
 import org.kodluyoruz.mybank.customer.Customer;
@@ -33,18 +34,19 @@ public class Account {
 
     private LocalDate created_date = LocalDate.now();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id"),
     inverseJoinColumns = @JoinColumn(name = "card_id", referencedColumnName = "id"))
-    private List<Card> cardList;
+    private List<Card> cards;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "card_id", referencedColumnName = "id"))
+            inverseJoinColumns = @JoinColumn(name = "transfer_id", referencedColumnName = "id"))
     private List<Transfer> transfers;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    @JsonIgnore
     private Customer customer;
 
     public AccountDto toAccountDto(){
@@ -55,8 +57,8 @@ public class Account {
                 .accountType(this.accountType)
                 .IBAN(this.IBAN)
                 .created_date(this.created_date)
+                .cards(this.cards)
                 .build();
-
     }
 
 }

@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
+
 @Data
 @Builder
 @Getter
@@ -38,10 +39,10 @@ public class Customer {
 
     private LocalDate created_date = LocalDate.now();
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Card> cards;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Account> accounts;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -59,6 +60,8 @@ public class Customer {
                 .phone(this.phone)
                 .created_date(this.created_date)
                 .address(this.address)
+                .cards(this.cards)
+                .accounts(this.accounts)
                 .build();
     }
 }

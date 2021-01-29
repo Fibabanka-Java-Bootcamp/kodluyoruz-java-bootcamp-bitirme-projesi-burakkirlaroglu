@@ -25,10 +25,6 @@ public class CustomerService {
         return customerRepository.findAll(page);
     }
 
-    public List<Customer> listByAccount(Account account){
-        return customerRepository.findCustomerByAccounts(account);
-    }
-
     public List<Customer> listByCard(Card card){
         return customerRepository.findCustomerByCards(card);
     }

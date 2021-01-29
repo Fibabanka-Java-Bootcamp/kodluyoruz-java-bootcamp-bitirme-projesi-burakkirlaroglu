@@ -1,8 +1,10 @@
 package org.kodluyoruz.mybank.card;
 
 import lombok.*;
+import org.kodluyoruz.mybank.account.Account;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Builder
 @Getter
@@ -17,7 +19,7 @@ public class CardDto {
 
     private String cardType;
 
-    private double carLimit;
+    private double cardLimit;
 
     private LocalDate expiredDate;
 
@@ -25,15 +27,18 @@ public class CardDto {
 
     private LocalDate createdDate = LocalDate.now();
 
+    private List<Account> accounts;
+
     public Card toCard(){
         return Card.builder()
                 .id(this.id)
                 .cardNo(this.cardNo)
                 .cardType(this.cardType)
-                .carLimit(this.carLimit)
+                .cardLimit(this.cardLimit)
                 .expiredDate(this.expiredDate)
                 .ccv(this.ccv)
                 .createdDate(this.createdDate)
+                .accounts(this.accounts)
                 .build();
     }
 }

@@ -1,6 +1,7 @@
 package org.kodluyoruz.mybank.customer;
 
 import org.kodluyoruz.mybank.account.Account;
+import org.kodluyoruz.mybank.account.AccountDto;
 import org.kodluyoruz.mybank.card.Card;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
