@@ -1,5 +1,6 @@
 package org.kodluyoruz.mybank.customer;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.kodluyoruz.mybank.account.Account;
 import org.kodluyoruz.mybank.address.Address;
@@ -43,7 +44,8 @@ public class Customer {
     @OneToMany(mappedBy = "customer")
     private List<Account> accounts;
 
-    @OneToOne(mappedBy = "customer")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     private Address address;
 
     public CustomerDto toCustomerDto(){

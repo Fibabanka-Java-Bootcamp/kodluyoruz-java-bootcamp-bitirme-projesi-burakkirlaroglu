@@ -4,7 +4,7 @@ import lombok.*;
 import org.kodluyoruz.mybank.address.Address;
 
 import java.time.LocalDate;
-
+@Data
 @Builder
 @Getter
 @Setter
