@@ -9,6 +9,7 @@ import org.kodluyoruz.mybank.transfer.Transfer;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Random;
 
 @Data
 @Builder
@@ -18,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "account")
-public class Account {
+public class Account{
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -30,7 +31,7 @@ public class Account {
 
     private String accountType;
 
-    private String IBAN;
+    private String iban;
 
     private LocalDate created_date = LocalDate.now();
 
@@ -55,7 +56,7 @@ public class Account {
                 .balance(this.balance)
                 .currency(this.currency)
                 .accountType(this.accountType)
-                .IBAN(this.IBAN)
+                .iban(this.iban)
                 .created_date(this.created_date)
                 .cards(this.cards)
                 .build();

@@ -25,7 +25,7 @@ public class AccountDto {
 
     private String accountType;
 
-    private String IBAN;
+    private String iban;
 
     private LocalDate created_date = LocalDate.now();
 
@@ -37,7 +37,7 @@ public class AccountDto {
                 .balance(this.balance)
                 .currency(this.currency)
                 .accountType(this.accountType)
-                .IBAN(this.IBAN)
+                .iban(this.iban)
                 .created_date(this.created_date)
                 .cards(this.cards)
                 .build();

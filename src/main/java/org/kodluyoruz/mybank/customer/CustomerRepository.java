@@ -13,12 +13,6 @@ public interface CustomerRepository extends CrudRepository<Customer, Integer> {
 
     Page<Customer> findAll(Pageable page);
 
-    List<Customer> findCustomerByAccounts(Account account);
-
-    List<Customer> findCustomerByCards(Card card);
-
-
-
-
+    List<Customer> findByAddress_City(String city);
 
 }

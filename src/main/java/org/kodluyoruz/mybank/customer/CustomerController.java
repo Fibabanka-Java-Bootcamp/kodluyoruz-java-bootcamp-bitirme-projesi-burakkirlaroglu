@@ -33,5 +33,9 @@ public class CustomerController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping(value = "/{cities}")
+    public List<Customer> listCities(@PathVariable String cities){
+        return customerService.findCities(cities);
+    }
 
 }

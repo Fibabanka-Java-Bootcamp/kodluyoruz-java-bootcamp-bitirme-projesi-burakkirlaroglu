@@ -1,7 +1,5 @@
 package org.kodluyoruz.mybank.customer;
 
-import org.kodluyoruz.mybank.account.Account;
-import org.kodluyoruz.mybank.card.Card;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -25,7 +23,7 @@ public class CustomerService {
         return customerRepository.findAll(page);
     }
 
-    public List<Customer> listByCard(Card card){
-        return customerRepository.findCustomerByCards(card);
+    public List<Customer> findCities(String city){
+        return customerRepository.findByAddress_City(city);
     }
 }
