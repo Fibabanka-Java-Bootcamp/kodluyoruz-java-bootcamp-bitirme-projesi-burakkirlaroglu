@@ -8,6 +8,8 @@ import org.kodluyoruz.mybank.entity.Customer;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -35,23 +37,8 @@ public class CustomerDto {
 
     private Address address;
 
-    private List<Account> accounts;
+    private List<AccountDto> accounts;
 
     private List<Card> cards;
 
-    public Customer toCustomer(){
-        return Customer.builder()
-                .id(this.id)
-                .fullName(this.fullName)
-                .TC(this.TC)
-                .password(this.password)
-                .description(this.description)
-                .email(this.email)
-                .phone(this.phone)
-                .created_date(this.created_date)
-                .address(this.address)
-                .cards(this.cards)
-                .accounts(this.accounts)
-                .build();
-    }
 }

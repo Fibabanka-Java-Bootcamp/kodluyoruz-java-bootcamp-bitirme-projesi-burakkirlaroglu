@@ -3,11 +3,8 @@ package org.kodluyoruz.mybank.controller;
 import org.kodluyoruz.mybank.dto.AccountDto;
 import org.kodluyoruz.mybank.entity.Account;
 import org.kodluyoruz.mybank.service.AccountService;
-import org.kodluyoruz.mybank.util.TPage;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +28,7 @@ public class AccountController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public AccountDto create(@RequestBody AccountDto accountDto){
-        return accountService.saveAccount(accountDto);
+        return accountService.addAccount(accountDto);
     }
 
     @GetMapping(params = {"page","size"})
@@ -53,13 +50,6 @@ public class AccountController {
     @ResponseStatus(HttpStatus.OK)
     public Optional<Account> findByid(@PathVariable int id){
         return accountService.getById(id);
-    }
-
-    @GetMapping(value = "/pagination")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<TPage<AccountDto>> list(Pageable pageable){
-        TPage<AccountDto> data = accountService.list(pageable);
-        return ResponseEntity.ok(data);
     }
 
 }

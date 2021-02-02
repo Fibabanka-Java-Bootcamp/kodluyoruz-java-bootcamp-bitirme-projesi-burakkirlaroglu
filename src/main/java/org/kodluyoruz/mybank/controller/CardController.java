@@ -27,7 +27,6 @@ public class CardController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CardDto create(@RequestBody CardDto cardDto){
-        Card card = new Card();
         return cardService.create(cardDto.toCard()).toCardDto();
     }
 

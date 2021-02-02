@@ -5,15 +5,13 @@ import org.kodluyoruz.mybank.dto.AccountDto;
 import org.kodluyoruz.mybank.entity.Account;
 import org.kodluyoruz.mybank.repository.AccountRepository;
 import org.kodluyoruz.mybank.service.AccountService;
-import org.kodluyoruz.mybank.util.TPage;
-import org.modelmapper.ModelMapper;
+import org.kodluyoruz.mybank.util.CheckAccountEvents;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 @Service
@@ -23,28 +21,17 @@ public class AccountServiceImp extends CheckAccountEvents implements AccountServ
     @Autowired
     private AccountRepository accountRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
-
     @Override
     @Transactional
-    public AccountDto saveAccount(AccountDto account) {
-        Account a = modelMapper.map(account, Account.class);
-        checkedAccountIban(a);
+    public AccountDto addAccount(AccountDto account) {
+        //mapper yazılacak
+        Account a = new Account();
+        setAccountIban(a);
         a = accountRepository.save(a);
         account.setId(a.getId());
         account.setIban(a.getIban());
+        account.setCreatedDate(a.getCreatedDate());
         return account;
-    }
-
-    @Override
-    @Transactional
-    public TPage<AccountDto> list(Pageable pageable) {
-        Page<Account> data = accountRepository.findAll(pageable);
-        TPage<AccountDto> response = new TPage<AccountDto>();
-        response.setStat(data, Arrays.asList(modelMapper.map(data.getContent(), AccountDto.class)));
-        return response;
     }
 
     @Override

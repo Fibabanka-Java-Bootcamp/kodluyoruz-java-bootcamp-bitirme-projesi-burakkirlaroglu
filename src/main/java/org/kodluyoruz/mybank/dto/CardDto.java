@@ -39,7 +39,6 @@ public class CardDto {
                 .expiredDate(this.expiredDate)
                 .ccv(this.ccv)
                 .createdDate(this.createdDate)
-                .accounts(this.accounts)
                 .build();
     }
 }

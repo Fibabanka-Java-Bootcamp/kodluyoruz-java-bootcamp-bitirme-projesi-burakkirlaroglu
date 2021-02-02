@@ -40,7 +40,8 @@ public class Card {
     private List<Account> accounts;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    @JsonIgnore
     private Customer customer;
 
     public CardDto toCardDto(){
@@ -52,7 +53,6 @@ public class Card {
                 .expiredDate(this.expiredDate)
                 .ccv(this.ccv)
                 .createdDate(this.createdDate)
-                .accounts(this.accounts)
                 .build();
     }
 }

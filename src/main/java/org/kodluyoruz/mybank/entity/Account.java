@@ -1,16 +1,13 @@
 package org.kodluyoruz.mybank.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.kodluyoruz.mybank.dto.AccountDto;
-import org.kodluyoruz.mybank.service.impl.CheckAccountEvents;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Random;
 
 @Data
 @Builder
@@ -20,7 +17,7 @@ import java.util.Random;
 @NoArgsConstructor
 @Entity
 @Table(name = "account")
-public class Account{
+public class Account {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -34,7 +31,8 @@ public class Account{
 
     private String iban;
 
-    private LocalDate created_date = LocalDate.now();
+    @CreationTimestamp
+    private LocalDate createdDate;
 
     @ManyToMany
     @JoinTable(joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id"),
@@ -50,8 +48,11 @@ public class Account{
 
     @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    @JsonIgnore
     private Customer customer;
 
+
+    //createdDate
     public AccountDto toAccountDto(){
         return AccountDto.builder()
                 .id(this.id)
@@ -59,9 +60,9 @@ public class Account{
                 .currency(this.currency)
                 .accountType(this.accountType)
                 .iban(this.iban)
-                .created_date(this.created_date)
-                //.cards(this.cards)
+                .createdDate(this.createdDate)
                 .build();
     }
+
 
 }

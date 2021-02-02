@@ -2,8 +2,6 @@ package org.kodluyoruz.mybank.dto;
 
 
 import lombok.*;
-import org.kodluyoruz.mybank.entity.Account;
-import org.kodluyoruz.mybank.entity.Customer;
 
 import java.time.LocalDate;
 
@@ -24,21 +22,6 @@ public class AccountDto {
 
     private String iban;
 
-    private LocalDate created_date = LocalDate.now();
+    private LocalDate createdDate;
 
-  //  private Customer customer;
-
-   // private List<Card> cards;
-
-    public Account toAccount(){
-        return Account.builder()
-                .id(this.id)
-                .balance(this.balance)
-                .currency(this.currency)
-                .accountType(this.accountType)
-                .iban(this.iban)
-                .created_date(this.created_date)
-                //.cards(this.cards)
-                .build();
-    }
 }

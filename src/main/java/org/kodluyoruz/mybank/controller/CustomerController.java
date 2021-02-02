@@ -1,45 +1,46 @@
 package org.kodluyoruz.mybank.controller;
 
-import org.kodluyoruz.mybank.dto.AccountDto;
-import org.kodluyoruz.mybank.entity.Account;
+import lombok.RequiredArgsConstructor;
 import org.kodluyoruz.mybank.service.CustomerService;
 import org.kodluyoruz.mybank.dto.CustomerDto;
 import org.kodluyoruz.mybank.entity.Customer;
+import org.kodluyoruz.mybank.transformer.CustomerTransformer;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Validated
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/v1/api/customer")
 public class CustomerController {
 
+
+    private final CustomerTransformer customerTransformer;
+
     private final CustomerService customerService;
 
-    public CustomerController(CustomerService customerService) {
-        this.customerService = customerService;
-    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CustomerDto create(@RequestBody CustomerDto customerDto){
-        return customerService.create(customerDto);
+        return customerService.createCustomer(customerDto);
     }
 
-//    @GetMapping(params = {"page","size"})
-//    public List<CustomerDto> list(@RequestParam("page") int page, @RequestParam("size") int size){
-//        return customerService.list(PageRequest.of(page, size)).stream()
-//                .map(Customer::toCustomerDto)
-//                .collect(Collectors.toList());
-//    }
-
-
     @GetMapping
-    public List<Customer> getCustomers (){
-        return customerService.listAll();
+    public String getMessage(){
+        return "Hello, World";
+    }
+
+    @GetMapping(params = {"page","size"})
+    public List<CustomerDto> list(@RequestParam("page") int page, @RequestParam("size") int size){
+        return customerService.listAll(PageRequest.of(page, size)).stream()
+                .map(customerTransformer::toCustomerDto)
+                .collect(Collectors.toList());
     }
 
 }

@@ -37,7 +37,8 @@ public class Customer {
 
     private LocalDate created_date = LocalDate.now();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private List<Card> cards;
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -48,19 +49,5 @@ public class Customer {
     @JsonIgnore
     private Address address;
 
-    public CustomerDto toCustomerDto(){
-        return CustomerDto.builder()
-                .id(this.id)
-                .fullName(this.fullName)
-                .TC(this.TC)
-                .password(this.password)
-                .description(this.description)
-                .email(this.email)
-                .phone(this.phone)
-                .created_date(this.created_date)
-                .address(this.address)
-                .cards(this.cards)
-                .accounts(this.accounts)
-                .build();
-    }
+
 }

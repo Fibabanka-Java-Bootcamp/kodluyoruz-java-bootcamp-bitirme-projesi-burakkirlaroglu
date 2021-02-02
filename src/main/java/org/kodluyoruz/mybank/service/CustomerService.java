@@ -2,13 +2,13 @@ package org.kodluyoruz.mybank.service;
 
 import org.kodluyoruz.mybank.dto.CustomerDto;
 import org.kodluyoruz.mybank.entity.Customer;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 
 public interface CustomerService {
 
-    CustomerDto create(CustomerDto customer);
+    CustomerDto createCustomer(CustomerDto customer);
 
-    List<Customer> listAll();
+    Page<Customer> listAll(Pageable pageable);
 }
