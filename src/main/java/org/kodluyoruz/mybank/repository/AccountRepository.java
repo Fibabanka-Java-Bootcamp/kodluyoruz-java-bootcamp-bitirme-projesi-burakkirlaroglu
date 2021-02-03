@@ -15,6 +15,6 @@ public interface AccountRepository extends CrudRepository<Account, Integer> {
 
     void deleteById(Integer id);
 
-    Optional<Account> findById(Integer id);
+    Account getById(int id);
 
 }

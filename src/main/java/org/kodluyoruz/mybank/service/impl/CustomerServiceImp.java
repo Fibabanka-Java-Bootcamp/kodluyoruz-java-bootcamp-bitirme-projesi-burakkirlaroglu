@@ -6,7 +6,6 @@ import org.kodluyoruz.mybank.entity.Customer;
 import org.kodluyoruz.mybank.repository.CustomerRepository;
 import org.kodluyoruz.mybank.service.CustomerService;
 import org.kodluyoruz.mybank.transformer.CustomerTransformer;
-import org.kodluyoruz.mybank.util.CheckAccountEvents;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
-public class CustomerServiceImp extends CheckAccountEvents implements CustomerService {
+public class CustomerServiceImp implements CustomerService {
 
 
     @Autowired
@@ -39,4 +38,23 @@ public class CustomerServiceImp extends CheckAccountEvents implements CustomerSe
     public Page<Customer> listAll(Pageable pageable) {
         return customerRepository.findAll(pageable);
     }
+
+    @Override
+    public Customer getById(int id) {
+        return customerRepository.getById(id);
+    }
+
+    @Override
+    @Transactional
+    public Customer updateCustomer(CustomerDto customerDto, int id) {
+
+        Customer customer = customerTransformer.customerTransfer(customerDto);
+
+        customerRepository.save(customer);
+
+        return customer;
+
+    }
+
+
 }

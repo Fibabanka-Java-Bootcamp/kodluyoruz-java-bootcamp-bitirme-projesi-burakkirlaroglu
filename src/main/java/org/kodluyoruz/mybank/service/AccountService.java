@@ -10,12 +10,12 @@ import java.util.Optional;
 
 public interface AccountService {
 
-    AccountDto addAccount(AccountDto accountDto);
+    AccountDto addAccount(AccountDto accountDto, int customerId);
 
     Page<Account> listPageAccount(Pageable pageable);
 
     void deleteAccount(int id);
 
-    Optional<Account> getById(int id);
+    Account getById(int id);
 
 }

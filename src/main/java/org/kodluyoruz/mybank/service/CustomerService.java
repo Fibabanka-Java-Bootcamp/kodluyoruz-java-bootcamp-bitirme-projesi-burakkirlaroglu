@@ -11,4 +11,8 @@ public interface CustomerService {
     CustomerDto createCustomer(CustomerDto customer);
 
     Page<Customer> listAll(Pageable pageable);
+
+    Customer getById(int id);
+
+    Customer updateCustomer(CustomerDto customerDto, int id);
 }

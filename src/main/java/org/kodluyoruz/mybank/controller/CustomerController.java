@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Validated
@@ -41,6 +42,17 @@ public class CustomerController {
         return customerService.listAll(PageRequest.of(page, size)).stream()
                 .map(customerTransformer::toCustomerDto)
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping(value = "/{id}")
+    public Customer customerById(@PathVariable int id){
+        return customerService.getById(id);
+    }
+
+    @PutMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public Customer updateCustomer(@PathVariable int id, @RequestBody CustomerDto customerDto){
+        return customerService.updateCustomer(customerDto, id);
     }
 
 }

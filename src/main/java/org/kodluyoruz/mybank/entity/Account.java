@@ -46,7 +46,7 @@ public class Account {
     @JsonIgnore
     private List<Transfer> transfers;
 
-    @ManyToOne
+    @ManyToOne(cascade =  CascadeType.PERSIST)
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     @JsonIgnore
     private Customer customer;

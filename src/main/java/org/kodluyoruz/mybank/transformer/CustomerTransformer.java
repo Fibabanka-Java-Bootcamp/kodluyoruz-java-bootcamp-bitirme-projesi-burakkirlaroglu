@@ -17,13 +17,23 @@ public class CustomerTransformer extends CheckAccountEvents {
     public Customer customerTransfer(CustomerDto customerDto) {
 
         List<Account> accounts = new ArrayList<>();
-
         accountDtoCreate(accounts, customerDto);
-
         Customer customer = new Customer();
+        customerCrete(accounts,customerDto,customer);
+        return customer;
+
+    }
+
+
+    private void customerCrete(List<Account> accounts, CustomerDto customerDto, Customer customer ){
         customer.setAccounts(accounts);
         customer.setDescription(customerDto.getDescription());
-        return customer;
+        customer.setAddress(customerDto.getAddress());
+        customer.setEmail(customerDto.getEmail());
+        customer.setFullName(customerDto.getFullName());
+        customer.setTC(customerDto.getTC());
+        customer.setPassword(customerDto.getPassword());
+        customer.setPhone(customerDto.getPhone());
     }
 
     private void accountDtoCreate(List<Account> accounts, CustomerDto customerDto) {
