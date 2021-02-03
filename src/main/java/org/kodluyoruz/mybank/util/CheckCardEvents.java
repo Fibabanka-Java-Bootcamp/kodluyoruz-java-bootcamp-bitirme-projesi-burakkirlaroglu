@@ -4,10 +4,9 @@ import java.util.Random;
 
 public class CheckCardEvents {
 
-    // özellikler final, static field hale gelecek.(tik)
-
     private static final int cardNoCount = 16;
     private static final int cardFieldCount = 4;
+    private static final int ccvNo = 3;
 
     public String createCardNo(){
         String cardNo;
@@ -33,8 +32,8 @@ public class CheckCardEvents {
         ccv = "";
         int count = 0;
         int n = 0;
-        for (int i = 0; i < 3; i++) {
-            if (count == 3) {
+        for (int i = 0; i < ccvNo; i++) {
+            if (count == ccvNo) {
                 ccv += " ";
                 count = 0;
             } else

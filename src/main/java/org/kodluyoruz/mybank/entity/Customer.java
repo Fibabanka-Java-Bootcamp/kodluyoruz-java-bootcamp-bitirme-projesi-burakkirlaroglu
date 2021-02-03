@@ -42,7 +42,7 @@ public class Customer {
     private List<Card> cards;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
     private List<Account> accounts;
 
     @OneToOne(cascade = CascadeType.ALL)

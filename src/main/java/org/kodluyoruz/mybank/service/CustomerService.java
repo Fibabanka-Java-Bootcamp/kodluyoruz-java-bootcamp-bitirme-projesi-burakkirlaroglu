@@ -14,5 +14,5 @@ public interface CustomerService {
 
     Customer getById(int id);
 
-    Customer updateCustomer(CustomerDto customerDto, int id);
+    Customer updateCustomer(CustomerDto customerDto, int customerId);
 }

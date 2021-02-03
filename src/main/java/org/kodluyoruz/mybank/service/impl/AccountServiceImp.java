@@ -33,19 +33,20 @@ public class AccountServiceImp extends CheckAccountEvents implements AccountServ
 
     @Override
     @Transactional
-    public AccountDto addAccount(AccountDto accountDto, int customerId) {
+    public Account addAccount(AccountDto accountDto, int customerId) {
 
         Customer customer = customerRepository.getById(customerId);
 
-        Account account = accountTransformer.AccountTransfer(accountDto);
+        Account account = new Account();
         account.setCustomer(customer);
-        setAccountIban(account);
+        account.setAccountType(accountDto.getAccountType());
+        account.setIban(setAccountIban(account));
+        account.setBalance(accountDto.getBalance());
+        account.setCurrency(accountDto.getCurrency());
+
         accountRepository.save(account);
-        accountDto.setId(account.getId());
-        accountDto.setIban(account.getIban());
-        accountDto.setCreatedDate(account.getCreatedDate());
-        accountDto.setCustomerDto(accountTransformer.toCustomerDtos(account.getCustomer()));
-        return accountDto;
+        return account;
+
     }
 
     @Override

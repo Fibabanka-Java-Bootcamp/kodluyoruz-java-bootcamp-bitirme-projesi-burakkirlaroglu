@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface AccountService {
 
-    AccountDto addAccount(AccountDto accountDto, int customerId);
+    Account addAccount(AccountDto accountDto, int customerId);
 
     Page<Account> listPageAccount(Pageable pageable);
 

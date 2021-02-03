@@ -28,7 +28,7 @@ public class AccountController {
 
     @PostMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public AccountDto create(@RequestBody AccountDto accountDto, @PathVariable int id){
+    public Account create(@RequestBody AccountDto accountDto, @PathVariable int id){
         return accountService.addAccount(accountDto, id);
     }
 

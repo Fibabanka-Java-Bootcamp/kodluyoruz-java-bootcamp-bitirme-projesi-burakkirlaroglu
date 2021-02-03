@@ -24,7 +24,6 @@ public class CustomerTransformer extends CheckAccountEvents {
 
     }
 
-
     private void customerCrete(List<Account> accounts, CustomerDto customerDto, Customer customer ){
         customer.setAccounts(accounts);
         customer.setDescription(customerDto.getDescription());
