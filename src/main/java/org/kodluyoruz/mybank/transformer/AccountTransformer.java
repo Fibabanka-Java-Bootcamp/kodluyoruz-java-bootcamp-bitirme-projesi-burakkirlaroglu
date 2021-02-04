@@ -25,6 +25,7 @@ public class AccountTransformer {
         customer.setFullName(customerDto.getFullName());
         customer.setDescription(customerDto.getDescription());
         customer.setAddress(customerDto.getAddress());
+        customer.setCards(customerDto.getCards());
 
         Account account = new Account();
         account.setCustomer(customer);

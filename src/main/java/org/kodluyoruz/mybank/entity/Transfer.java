@@ -1,6 +1,8 @@
 package org.kodluyoruz.mybank.entity;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.kodluyoruz.mybank.dto.AccountDto;
 import org.kodluyoruz.mybank.dto.TransferDto;
 
 import javax.persistence.*;
@@ -23,23 +25,18 @@ public class Transfer {
 
     private double amount;
 
+    private String senderIban;
+
+    private String receiverIban;
+
     private String currency;
 
     private String accountType;
 
-    private LocalDate date = LocalDate.now();
+    @CreationTimestamp
+    private LocalDate date;
 
-    @ManyToMany(mappedBy = "transfers")
+    @ManyToMany(mappedBy = "transfers", cascade = CascadeType.ALL)
     private List<Account> accounts;
-
-    public TransferDto toTransferDto(){
-        return TransferDto.builder()
-                .id(this.id)
-                .amount(this.amount)
-                .currency(this.currency)
-                .accountType(this.accountType)
-                .date(this.date)
-                .build();
-    }
 
 }

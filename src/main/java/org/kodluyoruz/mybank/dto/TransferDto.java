@@ -1,9 +1,11 @@
 package org.kodluyoruz.mybank.dto;
 
 import lombok.*;
+import org.kodluyoruz.mybank.entity.Account;
 import org.kodluyoruz.mybank.entity.Transfer;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Builder
 @Getter
@@ -16,19 +18,16 @@ public class TransferDto {
 
     private double amount;
 
+    private String senderIban;
+
+    private String receiverIban;
+
     private String currency;
 
     private String accountType;
 
     private LocalDate date = LocalDate.now();
 
-    public Transfer toTransfer(){
-        return Transfer.builder()
-                .id(this.id)
-                .amount(this.amount)
-                .currency(this.currency)
-                .accountType(this.accountType)
-                .date(this.date)
-                .build();
-    }
+    private List<Account> accounts;
+
 }

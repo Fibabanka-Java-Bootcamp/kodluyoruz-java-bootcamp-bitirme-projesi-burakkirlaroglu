@@ -2,6 +2,7 @@ package org.kodluyoruz.mybank.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.kodluyoruz.mybank.dto.CustomerDto;
 
 import javax.persistence.*;
@@ -35,7 +36,8 @@ public class Customer {
 
     private String phone;
 
-    private LocalDate created_date = LocalDate.now();
+    @CreationTimestamp
+    private LocalDate created_date;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id", referencedColumnName = "id")

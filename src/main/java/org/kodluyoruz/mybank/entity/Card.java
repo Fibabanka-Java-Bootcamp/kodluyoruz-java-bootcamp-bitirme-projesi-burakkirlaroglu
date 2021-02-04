@@ -2,6 +2,7 @@ package org.kodluyoruz.mybank.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.kodluyoruz.mybank.dto.CardDto;
 
 import javax.persistence.*;
@@ -31,7 +32,8 @@ public class Card {
 
     private int ccv;
 
-    private LocalDate createdDate = LocalDate.now();
+    @CreationTimestamp
+    private LocalDate createdDate;
 
     @ManyToMany
     @JoinTable(joinColumns = @JoinColumn(name = "card_id", referencedColumnName = "id"),

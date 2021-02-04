@@ -43,11 +43,10 @@ public class Account {
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "transfer_id", referencedColumnName = "id"))
-    @JsonIgnore
     private List<Transfer> transfers;
 
     @ManyToOne(cascade =  CascadeType.PERSIST)
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    @JoinColumn(name = "customer_id", referencedColumnName = "id", insertable = false, updatable = false)
     @JsonIgnore
     private Customer customer;
 
