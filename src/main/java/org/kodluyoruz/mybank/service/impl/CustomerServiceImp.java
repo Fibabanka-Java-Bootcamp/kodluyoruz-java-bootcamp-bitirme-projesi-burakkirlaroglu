@@ -1,6 +1,8 @@
 package org.kodluyoruz.mybank.service.impl;
 
 import org.kodluyoruz.mybank.dto.CustomerDto;
+import org.kodluyoruz.mybank.entity.Account;
+import org.kodluyoruz.mybank.entity.Card;
 import org.kodluyoruz.mybank.entity.Customer;
 import org.kodluyoruz.mybank.repository.CustomerRepository;
 import org.kodluyoruz.mybank.service.CustomerService;
@@ -67,7 +69,35 @@ public class CustomerServiceImp implements CustomerService {
     }
 
     public void deleteCustomer(int id){
-        customerRepository.deleteById(id);
+        Customer customer = customerRepository.getById(id);
+
+        if (accountBalanceCheck(customer) & cardDebtCheck(customer)){
+            customerRepository.deleteById(id);
+        }
+
+    }
+
+    public boolean accountBalanceCheck(Customer customer){
+
+        for (int i = 0; i < customer.getAccounts().size(); i++) {
+            Account account = customer.getAccounts().get(i);
+            if (account.getBalance() > 0){
+                throw new NullPointerException(customer.getFullName() +  "Kullanıcısının Bakiyesinde para var");
+            }
+        }
+
+        return true;
+    }
+
+    public boolean cardDebtCheck(Customer customer){
+        for (int i = 0; i < customer.getCards().size(); i++) {
+            Card card = customer.getCards().get(i);
+            if (card.getCardDebt() > 0){
+                throw new NullPointerException(customer.getFullName() +  "Kullanıcısının Borcu var");
+            }
+        }
+
+        return true;
     }
 
 

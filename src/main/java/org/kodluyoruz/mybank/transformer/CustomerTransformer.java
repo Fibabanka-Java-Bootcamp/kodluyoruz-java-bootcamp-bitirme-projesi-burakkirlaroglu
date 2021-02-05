@@ -9,7 +9,6 @@ import org.kodluyoruz.mybank.entity.Customer;
 import org.kodluyoruz.mybank.util.NumberEvents;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,16 +58,12 @@ public class CustomerTransformer extends NumberEvents {
 
             CardDto cardDto = customerDto.getCards().get(i);
 
-           // int expriredTime = 3;
-
             Card card = new Card();
             card.setCardNo(createCardNo());
             card.setCardLimit(cardDto.getCardLimit());
             card.setCcv(ccvNo());
             card.setCardType(cardDto.getCardType());
-//            card.setExpiredDate(LocalDate.of(LocalDate.now().getYear() + expriredTime,
-//                    LocalDate.now().getMonth(),
-//                    LocalDate.now().getDayOfMonth()));
+            card.setCardDebt(cardDto.getCardDebt());
             cards.add(card);
 
         }
@@ -120,6 +115,7 @@ public class CustomerTransformer extends NumberEvents {
                 .expiredDate(card.getExpiredDate())
                 .ccv(card.getCcv())
                 .createdDate(card.getCreatedDate())
+                .cardDebt(card.getCardDebt())
                 .build();
     }
 

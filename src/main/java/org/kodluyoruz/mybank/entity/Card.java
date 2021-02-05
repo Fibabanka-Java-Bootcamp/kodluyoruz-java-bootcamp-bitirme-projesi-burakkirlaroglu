@@ -28,6 +28,8 @@ public class Card {
 
     private double cardLimit;
 
+    private double cardDebt;
+
     @CreationTimestamp
     private LocalDate createdDate;
 
@@ -55,6 +57,7 @@ public class Card {
                 .expiredDate(this.expiredDate)
                 .ccv(this.ccv)
                 .createdDate(this.createdDate)
+                .cardDebt(this.cardDebt)
                 .build();
     }
 }

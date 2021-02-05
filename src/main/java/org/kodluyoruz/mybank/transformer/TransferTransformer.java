@@ -48,38 +48,4 @@ public class TransferTransformer {
         }
     }
 
-
-    private TransferDto toTransferDto(Transfer transfer){
-        return TransferDto.builder()
-                .id(transfer.getId())
-                .amount(transfer.getAmount())
-                .currency(transfer.getCurrency())
-                .accountType(transfer.getAccountType())
-                .date(transfer.getDate())
-                .senderIban(transfer.getSenderIban())
-                .receiverIban(transfer.getReceiverIban())
-                .accounts(transfer.getAccounts())
-                .build();
-    }
-
-//    private AccountDto toAccountDto(Account account){
-//        return AccountDto.builder()
-//                .id(account.getId())
-//                .balance(account.getBalance())
-//                .currency(account.getCurrency())
-//                .accountType(account.getAccountType())
-//                .iban(account.getIban())
-//                .createdDate(LocalDate.now())
-//                .build();
-//    }
-
-//    public List<AccountDto> toAccountDtoList(List<Account> accounts){
-//        List<AccountDto> accountDtos = new ArrayList<>();
-//        for (int i = 0; i < accounts.size(); i++) {
-//            accountDtos.add(toAccountDto(accounts.get(i)));
-//        }
-//        return accountDtos;
-//    }
-
-
 }

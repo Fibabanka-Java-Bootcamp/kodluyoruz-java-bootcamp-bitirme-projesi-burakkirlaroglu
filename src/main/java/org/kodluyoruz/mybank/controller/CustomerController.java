@@ -51,7 +51,7 @@ public class CustomerController {
     }
 
     @DeleteMapping(value = "delete/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCustomer(@PathVariable int id){
         customerService.deleteCustomer(id);
     }

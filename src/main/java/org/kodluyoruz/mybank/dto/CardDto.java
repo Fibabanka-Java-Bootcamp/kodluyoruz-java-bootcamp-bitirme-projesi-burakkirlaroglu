@@ -23,6 +23,8 @@ public class CardDto {
 
     private double cardLimit;
 
+    private double cardDebt;
+
     private LocalDate expiredDate;
 
     private int ccv;
@@ -40,6 +42,7 @@ public class CardDto {
                 .expiredDate(this.expiredDate)
                 .ccv(this.ccv)
                 .createdDate(this.createdDate)
+                .cardDebt(this.cardDebt)
                 .build();
     }
 }
