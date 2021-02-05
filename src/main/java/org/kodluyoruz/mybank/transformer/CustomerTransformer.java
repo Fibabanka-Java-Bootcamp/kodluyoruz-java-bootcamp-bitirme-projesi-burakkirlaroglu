@@ -1,10 +1,12 @@
 package org.kodluyoruz.mybank.transformer;
 
 import org.kodluyoruz.mybank.dto.AccountDto;
+import org.kodluyoruz.mybank.dto.CardDto;
 import org.kodluyoruz.mybank.dto.CustomerDto;
 import org.kodluyoruz.mybank.entity.Account;
+import org.kodluyoruz.mybank.entity.Card;
 import org.kodluyoruz.mybank.entity.Customer;
-import org.kodluyoruz.mybank.util.CheckAccountEvents;
+import org.kodluyoruz.mybank.util.NumberEvents;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -12,19 +14,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class CustomerTransformer extends CheckAccountEvents {
+public class CustomerTransformer extends NumberEvents {
 
     public Customer customerTransfer(CustomerDto customerDto) {
-
+        List<Card> cards = new ArrayList<>();
         List<Account> accounts = new ArrayList<>();
         accountDtoCreate(accounts, customerDto);
+        cartDtoCreate(cards, customerDto);
         Customer customer = new Customer();
-        customerCrete(accounts,customerDto,customer);
+        customerCreate(accounts,customerDto,customer, cards);
         return customer;
 
     }
 
-    private void customerCrete(List<Account> accounts, CustomerDto customerDto, Customer customer ){
+    private void customerCreate(List<Account> accounts, CustomerDto customerDto, Customer customer, List<Card> cards){
         customer.setAccounts(accounts);
         customer.setDescription(customerDto.getDescription());
         customer.setAddress(customerDto.getAddress());
@@ -33,6 +36,7 @@ public class CustomerTransformer extends CheckAccountEvents {
         customer.setTC(customerDto.getTC());
         customer.setPassword(customerDto.getPassword());
         customer.setPhone(customerDto.getPhone());
+        customer.setCards(cards);
     }
 
     private void accountDtoCreate(List<Account> accounts, CustomerDto customerDto) {
@@ -50,6 +54,26 @@ public class CustomerTransformer extends CheckAccountEvents {
         }
     }
 
+    private void cartDtoCreate(List<Card> cards, CustomerDto customerDto){
+        for (int i = 0; i < customerDto.getCards().size(); i++) {
+
+            CardDto cardDto = customerDto.getCards().get(i);
+
+           // int expriredTime = 3;
+
+            Card card = new Card();
+            card.setCardNo(createCardNo());
+            card.setCardLimit(cardDto.getCardLimit());
+            card.setCcv(ccvNo());
+            card.setCardType(cardDto.getCardType());
+//            card.setExpiredDate(LocalDate.of(LocalDate.now().getYear() + expriredTime,
+//                    LocalDate.now().getMonth(),
+//                    LocalDate.now().getDayOfMonth()));
+            cards.add(card);
+
+        }
+    }
+
     public CustomerDto toCustomerDto(Customer customer){
 
         return CustomerDto.builder()
@@ -60,9 +84,9 @@ public class CustomerTransformer extends CheckAccountEvents {
                 .description(customer.getDescription())
                 .email(customer.getEmail())
                 .phone(customer.getPhone())
-                .created_date(customer.getCreated_date())
+                .createdDate(customer.getCreatedDate())
                 .address(customer.getAddress())
-                .cards(customer.getCards())
+                .cards(toCardDtoList(customer.getCards()))
                 .accounts(toAccountDtoList(customer.getAccounts()))
                 .build();
     }
@@ -74,7 +98,7 @@ public class CustomerTransformer extends CheckAccountEvents {
                 .currency(account.getCurrency())
                 .accountType(account.getAccountType())
                 .iban(account.getIban())
-                .createdDate(LocalDate.now())
+                .createdDate(account.getCreatedDate())
                 .build();
     }
 
@@ -84,6 +108,27 @@ public class CustomerTransformer extends CheckAccountEvents {
             accountDtos.add(toAccountDto(accounts.get(i)));
         }
         return accountDtos;
+    }
+
+
+    private CardDto toCardDto(Card card){
+        return CardDto.builder()
+                .id(card.getId())
+                .cardNo(card.getCardNo())
+                .cardType(card.getCardType())
+                .cardLimit(card.getCardLimit())
+                .expiredDate(card.getExpiredDate())
+                .ccv(card.getCcv())
+                .createdDate(card.getCreatedDate())
+                .build();
+    }
+
+    public List<CardDto> toCardDtoList(List<Card> cards){
+        List<CardDto> cardDtos = new ArrayList<>();
+        for (int i = 0; i < cards.size(); i++) {
+            cardDtos.add(toCardDto(cards.get(i)));
+        }
+        return cardDtos;
     }
 
 }

@@ -2,7 +2,6 @@ package org.kodluyoruz.mybank.dto;
 
 import lombok.*;
 import org.kodluyoruz.mybank.entity.Account;
-import org.kodluyoruz.mybank.entity.Transfer;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,7 +25,7 @@ public class TransferDto {
 
     private String accountType;
 
-    private LocalDate date = LocalDate.now();
+    private LocalDate date;
 
     private List<Account> accounts;
 

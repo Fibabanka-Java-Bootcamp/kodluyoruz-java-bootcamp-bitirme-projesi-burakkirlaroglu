@@ -32,11 +32,6 @@ public class CustomerController {
         return customerService.createCustomer(customerDto);
     }
 
-    @GetMapping
-    public String getMessage(){
-        return "Hello, World";
-    }
-
     @GetMapping(params = {"page","size"})
     public List<CustomerDto> list(@RequestParam("page") int page, @RequestParam("size") int size){
         return customerService.listAll(PageRequest.of(page, size)).stream()
@@ -53,6 +48,12 @@ public class CustomerController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Customer updateCustomer(@PathVariable int id, @RequestBody CustomerDto customerDto){
         return customerService.updateCustomer(customerDto, id);
+    }
+
+    @DeleteMapping(value = "delete/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void deleteCustomer(@PathVariable int id){
+        customerService.deleteCustomer(id);
     }
 
 }

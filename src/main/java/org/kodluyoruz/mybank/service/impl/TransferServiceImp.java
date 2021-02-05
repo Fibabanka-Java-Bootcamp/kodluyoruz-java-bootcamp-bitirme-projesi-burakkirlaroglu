@@ -94,9 +94,6 @@ public class TransferServiceImp implements TransferService {
         String tl = "TRY";
         String usd = "USD";
 
-        double euroAmount = amount * (usdRate() / eurRate());
-        double usdAmount = amount * (eurRate() / usdRate());
-
         Account accountSend = transfer.getAccounts().get(0);
         Account accountTake = transfer.getAccounts().get(1);
 
@@ -120,9 +117,13 @@ public class TransferServiceImp implements TransferService {
                     accountSend.setBalance(accountSend.getBalance() - amount);
                     accountTake.setBalance(accountTake.getBalance() + (amount / usdRate()));
                 }else if (accountSend.getCurrency().equals(euro) & accountTake.getCurrency().equals(usd)){
+                    double euroAmount = amount * (usdRate() / eurRate());
+                    double usdAmount = amount * (eurRate() / usdRate());
                     accountSend.setBalance(accountSend.getBalance() - euroAmount);
                     accountTake.setBalance(accountTake.getBalance() + usdAmount);
                 }else if (accountSend.getCurrency().equals(usd) & accountTake.getCurrency().equals(euro)){
+                    double euroAmount = amount * (usdRate() / eurRate());
+                    double usdAmount = amount * (eurRate() / usdRate());
                     accountSend.setBalance(accountSend.getBalance() - usdAmount);
                     accountTake.setBalance(accountTake.getBalance() + euroAmount);
                 }
@@ -130,8 +131,6 @@ public class TransferServiceImp implements TransferService {
             accountRepository.save(accountSend);
             accountRepository.save(accountTake);
         }
-
-
 
     }
 

@@ -40,7 +40,7 @@ public class Account {
     @JsonIgnore
     private List<Card> cards;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "transfer_id", referencedColumnName = "id"))
     private List<Transfer> transfers;
@@ -50,18 +50,19 @@ public class Account {
     @JsonIgnore
     private Customer customer;
 
-
-    //createdDate
-    public AccountDto toAccountDto(){
+    public AccountDto toAccountDto(Account account){
         return AccountDto.builder()
-                .id(this.id)
-                .balance(this.balance)
-                .currency(this.currency)
-                .accountType(this.accountType)
-                .iban(this.iban)
-                .createdDate(this.createdDate)
+                .id(account.getId())
+                .balance(account.getBalance())
+                .currency(account.getCurrency())
+                .accountType(account.getAccountType())
+                .iban(account.getIban())
+                .createdDate(LocalDate.now())
                 .build();
     }
+
+
+
 
 
 }

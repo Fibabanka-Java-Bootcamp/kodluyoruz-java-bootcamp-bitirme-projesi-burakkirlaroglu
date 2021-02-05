@@ -2,9 +2,11 @@ package org.kodluyoruz.mybank.dto;
 
 
 import lombok.*;
+import org.kodluyoruz.mybank.entity.Account;
 import org.kodluyoruz.mybank.entity.Customer;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Builder
 @Getter
@@ -24,7 +26,5 @@ public class AccountDto {
     private String iban;
 
     private LocalDate createdDate;
-
-    private CustomerDto customerDto;
 
 }

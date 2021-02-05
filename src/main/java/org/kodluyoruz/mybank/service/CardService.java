@@ -1,12 +1,13 @@
 package org.kodluyoruz.mybank.service;
 
+import org.kodluyoruz.mybank.dto.CardDto;
 import org.kodluyoruz.mybank.entity.Card;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface CardService {
 
-    public Card create(Card card);
+    Card create(CardDto cardDto);
 
-    public Page<Card> list(Pageable pageable);
+    Page<Card> list(Pageable pageable);
 }

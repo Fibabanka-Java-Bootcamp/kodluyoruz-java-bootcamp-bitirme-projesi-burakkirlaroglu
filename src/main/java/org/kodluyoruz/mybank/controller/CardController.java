@@ -24,11 +24,11 @@ public class CardController {
         this.cardService = cardService;
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public CardDto create(@RequestBody CardDto cardDto){
-        return cardService.create(cardDto.toCard()).toCardDto();
-    }
+//    @PostMapping
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public CardDto create(@RequestBody CardDto cardDto){
+//        return cardService.create();
+//    }
 
     @GetMapping(params = {"page","size"})
     public List<CardDto> list(@RequestParam("page") int page, @RequestParam("size") int size){

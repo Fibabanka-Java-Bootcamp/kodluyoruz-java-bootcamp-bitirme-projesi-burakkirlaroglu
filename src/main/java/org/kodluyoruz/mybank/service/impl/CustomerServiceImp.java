@@ -1,9 +1,6 @@
 package org.kodluyoruz.mybank.service.impl;
 
-import lombok.extern.slf4j.Slf4j;
-import org.kodluyoruz.mybank.dto.AccountDto;
 import org.kodluyoruz.mybank.dto.CustomerDto;
-import org.kodluyoruz.mybank.entity.Account;
 import org.kodluyoruz.mybank.entity.Customer;
 import org.kodluyoruz.mybank.repository.CustomerRepository;
 import org.kodluyoruz.mybank.service.CustomerService;
@@ -11,15 +8,11 @@ import org.kodluyoruz.mybank.transformer.CustomerTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
-@Slf4j
 public class CustomerServiceImp implements CustomerService {
 
 
@@ -37,6 +30,7 @@ public class CustomerServiceImp implements CustomerService {
         customerRepository.save(customer);
         customerDto.setId(customer.getId());
         customerDto.setAccounts(customerTransformer.toAccountDtoList(customer.getAccounts()));
+        customerDto.setCards(customerTransformer.toCardDtoList(customer.getCards()));
         return customerDto;
     }
 
@@ -70,6 +64,10 @@ public class CustomerServiceImp implements CustomerService {
 
         return customer;
 
+    }
+
+    public void deleteCustomer(int id){
+        customerRepository.deleteById(id);
     }
 
 

@@ -1,12 +1,10 @@
 package org.kodluyoruz.mybank.transformer;
 
-import org.kodluyoruz.mybank.dto.AccountDto;
 import org.kodluyoruz.mybank.dto.TransferDto;
 import org.kodluyoruz.mybank.entity.Account;
 import org.kodluyoruz.mybank.entity.Transfer;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -33,12 +33,12 @@ public class CustomerDto {
 
     private String phone;
 
-    private LocalDate created_date = LocalDate.now();
+    private LocalDate createdDate;
 
     private Address address;
 
     private List<AccountDto> accounts;
 
-    private List<Card> cards;
+    private List<CardDto> cards;
 
 }

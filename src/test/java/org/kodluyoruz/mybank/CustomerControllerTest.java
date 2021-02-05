@@ -31,26 +31,7 @@ import org.junit.jupiter.api.Test;
         @Autowired
         private MockMvc mockMvc;
 
-        @MockBean
-        private CustomerService customerService;
 
-        @Test
-        public void shouldReturnDefaultMessage() throws Exception {
-            this.mockMvc.perform(get("/v1/api/customer")).andDo(print()).andExpect(status().isOk())
-                    .andExpect(content().string(containsString("Hello, World")));
-        }
-
-        @Test
-        public void customerCreatedStatus() throws Exception {
-
-        CustomerDto customerDto = new CustomerDto();
-
-        this.mockMvc.perform(post("/v1/api/customer").
-                contentType(MediaType.APPLICATION_JSON).
-                accept(MediaType.APPLICATION_JSON).
-                content(asJsonString(customerDto))).
-                andExpect(status().isCreated());
-    }
 
     public static String asJsonString(final Object obj) {
         try {

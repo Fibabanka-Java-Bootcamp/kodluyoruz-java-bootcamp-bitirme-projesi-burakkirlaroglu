@@ -22,18 +22,18 @@ public class Card {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-    private int cardNo;
+    private String cardNo;
 
     private String cardType;
 
     private double cardLimit;
 
+    @CreationTimestamp
+    private LocalDate createdDate;
+
     private LocalDate expiredDate = LocalDate.of(2022,8,21);
 
     private int ccv;
-
-    @CreationTimestamp
-    private LocalDate createdDate;
 
     @ManyToMany
     @JoinTable(joinColumns = @JoinColumn(name = "card_id", referencedColumnName = "id"),

@@ -1,6 +1,7 @@
 package org.kodluyoruz.mybank.dto;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.kodluyoruz.mybank.entity.Account;
 import org.kodluyoruz.mybank.entity.Card;
 
@@ -16,7 +17,7 @@ public class CardDto {
 
     private int id;
 
-    private int cardNo;
+    private String cardNo;
 
     private String cardType;
 
@@ -26,7 +27,7 @@ public class CardDto {
 
     private int ccv;
 
-    private LocalDate createdDate = LocalDate.now();
+    private LocalDate createdDate;
 
     private List<Account> accounts;
 

@@ -37,7 +37,7 @@ public class Customer {
     private String phone;
 
     @CreationTimestamp
-    private LocalDate created_date;
+    private LocalDate createdDate;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id", referencedColumnName = "id")

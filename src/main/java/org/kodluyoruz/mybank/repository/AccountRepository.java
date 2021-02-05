@@ -11,8 +11,6 @@ public interface AccountRepository extends CrudRepository<Account, Integer> {
 
     Page<Account> findAll(Pageable pageable);
 
-    void deleteById(Integer id);
-
     Account getById(int id);
 
 }
