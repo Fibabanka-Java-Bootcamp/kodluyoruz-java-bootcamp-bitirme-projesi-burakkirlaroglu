@@ -43,14 +43,15 @@ public class Account {
     @ManyToMany
     @JoinTable(joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "transfer_id", referencedColumnName = "id"))
+    @JsonIgnore
     private List<Transfer> transfers;
 
-    @ManyToOne(cascade =  CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id", insertable = false, updatable = false)
     @JsonIgnore
     private Customer customer;
 
-    public AccountDto toAccountDto(Account account){
+    public static AccountDto toAccountDto(Account account){
         return AccountDto.builder()
                 .id(account.getId())
                 .balance(account.getBalance())

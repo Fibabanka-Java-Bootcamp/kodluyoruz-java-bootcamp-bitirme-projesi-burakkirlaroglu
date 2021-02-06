@@ -16,4 +16,6 @@ public interface AccountService {
 
     Account getById(int id);
 
+    void addAccount(int id, AccountDto accountDto);
+
 }

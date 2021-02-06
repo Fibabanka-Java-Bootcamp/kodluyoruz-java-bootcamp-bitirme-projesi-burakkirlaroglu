@@ -3,6 +3,7 @@ package org.kodluyoruz.mybank.controller;
 import org.kodluyoruz.mybank.dto.CardDto;
 import org.kodluyoruz.mybank.service.CardService;
 import org.kodluyoruz.mybank.entity.Card;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -18,17 +19,18 @@ import java.util.stream.Collectors;
 @RequestMapping("/v1/api/card")
 public class CardController {
 
+    @Autowired
     private final CardService cardService;
 
     public CardController(CardService cardService) {
         this.cardService = cardService;
     }
 
-//    @PostMapping
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public CardDto create(@RequestBody CardDto cardDto){
-//        return cardService.create();
-//    }
+    @PutMapping(value = "/custno/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addCart(@RequestBody CardDto cardDto, @PathVariable int id){
+        cardService.addCart(id, cardDto);
+    }
 
     @GetMapping(params = {"page","size"})
     public List<CardDto> list(@RequestParam("page") int page, @RequestParam("size") int size){

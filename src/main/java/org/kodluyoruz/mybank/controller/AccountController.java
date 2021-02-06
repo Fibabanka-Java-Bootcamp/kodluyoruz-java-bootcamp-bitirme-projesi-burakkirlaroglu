@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.kodluyoruz.mybank.dto.AccountDto;
 import org.kodluyoruz.mybank.entity.Account;
 import org.kodluyoruz.mybank.service.AccountService;
-import org.kodluyoruz.mybank.transformer.AccountTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -25,14 +24,12 @@ public class AccountController {
     @Autowired
     private final AccountService accountService;
 
-    private final AccountTransformer accountTransformer;
-
 
     @GetMapping(params = {"page","size"})
     @ResponseStatus(HttpStatus.OK)
     public List<AccountDto> list(@RequestParam("page") int page, @RequestParam("size") int size){
         return accountService.listPageAccount(PageRequest.of(page, size)).stream()
-                .map(accountTransformer::toAccountDto)
+                .map(Account::toAccountDto)
                 .collect(Collectors.toList());
     }
 
@@ -46,6 +43,12 @@ public class AccountController {
     @ResponseStatus(HttpStatus.OK)
     public Account findByid(@PathVariable int id){
         return accountService.getById(id);
+    }
+
+    @PutMapping(value = "/custno/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addAccount(@PathVariable int id, @RequestBody AccountDto accountDto){
+        accountService.addAccount(id, accountDto);
     }
 
 }

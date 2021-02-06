@@ -29,7 +29,7 @@ public class Address {
 
     private String state;
 
-    @OneToOne(mappedBy = "address",fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "address")
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     @JsonIgnore
     private Customer customer;

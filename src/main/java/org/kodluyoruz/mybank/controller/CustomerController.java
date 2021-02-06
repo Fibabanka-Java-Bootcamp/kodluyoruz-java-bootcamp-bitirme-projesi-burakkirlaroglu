@@ -1,6 +1,8 @@
 package org.kodluyoruz.mybank.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.kodluyoruz.mybank.dto.AccountDto;
+import org.kodluyoruz.mybank.entity.Account;
 import org.kodluyoruz.mybank.service.CustomerService;
 import org.kodluyoruz.mybank.dto.CustomerDto;
 import org.kodluyoruz.mybank.entity.Customer;
@@ -55,5 +57,6 @@ public class CustomerController {
     public void deleteCustomer(@PathVariable int id){
         customerService.deleteCustomer(id);
     }
+
 
 }

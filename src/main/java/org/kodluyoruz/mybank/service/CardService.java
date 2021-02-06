@@ -10,4 +10,6 @@ public interface CardService {
     Card create(CardDto cardDto);
 
     Page<Card> list(Pageable pageable);
+
+    void addCart(int id, CardDto cardDto);
 }

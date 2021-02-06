@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 @Service
 public class CustomerServiceImp implements CustomerService {
@@ -68,6 +70,7 @@ public class CustomerServiceImp implements CustomerService {
 
     }
 
+    @Override
     public void deleteCustomer(int id){
         Customer customer = customerRepository.getById(id);
 
