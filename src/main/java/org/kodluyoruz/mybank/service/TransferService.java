@@ -17,6 +17,6 @@ public interface TransferService {
 
     List<Transfer> findAll();
 
-    void sendMoney(TransferDto transferDto, String iban1, String iban2);
+    Transfer sendMoney(TransferDto transferDto, String iban1, String iban2);
 
 }

@@ -44,11 +44,10 @@ public class Customer {
     private List<Card> cards;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private List<Account> accounts;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JsonIgnore
     private Address address;
 
 

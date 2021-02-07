@@ -13,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 
 @Service
@@ -52,17 +51,14 @@ public class CustomerServiceImp implements CustomerService {
     @Transactional
     public Customer updateCustomer(CustomerDto customerDto, int customerId) {
 
-        customerId = customerDto.getId();
+        Customer customer = customerRepository.getById(customerId);
 
-        Customer customer = new Customer();
-        customer.setId(customerId);
         customer.setFullName(customerDto.getFullName());
         customer.setPassword(customerDto.getPassword());
         customer.setDescription(customerDto.getDescription());
         customer.setEmail(customerDto.getEmail());
         customer.setTC(customerDto.getTC());
         customer.setPhone(customerDto.getPhone());
-        customer.setAddress(customerDto.getAddress());
 
         customerRepository.save(customer);
 
@@ -81,14 +77,12 @@ public class CustomerServiceImp implements CustomerService {
     }
 
     public boolean accountBalanceCheck(Customer customer){
-
         for (int i = 0; i < customer.getAccounts().size(); i++) {
             Account account = customer.getAccounts().get(i);
             if (account.getBalance() > 0){
                 throw new NullPointerException(customer.getFullName() +  "Kullanıcısının Bakiyesinde para var");
             }
         }
-
         return true;
     }
 
@@ -99,7 +93,6 @@ public class CustomerServiceImp implements CustomerService {
                 throw new NullPointerException(customer.getFullName() +  "Kullanıcısının Borcu var");
             }
         }
-
         return true;
     }
 

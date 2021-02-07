@@ -37,9 +37,7 @@ public class Card {
 
     private int ccv;
 
-    @ManyToMany
-    @JoinTable(joinColumns = @JoinColumn(name = "card_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id"))
+    @ManyToMany(mappedBy = "cards")
     @JsonIgnore
     private List<Account> accounts;
 

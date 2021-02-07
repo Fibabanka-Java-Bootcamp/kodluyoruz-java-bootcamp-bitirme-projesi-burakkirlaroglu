@@ -5,11 +5,13 @@ import org.kodluyoruz.mybank.entity.Card;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface CardService {
+import java.util.HashMap;
 
-    Card create(CardDto cardDto);
+public interface CardService {
 
     Page<Card> list(Pageable pageable);
 
     void addCart(int id, CardDto cardDto);
+
+    HashMap<String,Double> findCardDept(int id);
 }

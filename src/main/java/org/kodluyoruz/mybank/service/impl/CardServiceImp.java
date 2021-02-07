@@ -12,7 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class CardServiceImp extends NumberEvents implements CardService {
@@ -22,11 +22,6 @@ public class CardServiceImp extends NumberEvents implements CardService {
 
     @Autowired
     private CustomerRepository customerRepository;
-
-    @Override
-    public Card create(CardDto cardDto) {
-        return null;
-    }
 
     @Override
     public Page<Card> list(Pageable pageable) {
@@ -58,4 +53,22 @@ public class CardServiceImp extends NumberEvents implements CardService {
         cards.add(card);
         return true;
     }
+
+
+    @Override
+    public HashMap<String,Double> findCardDept(int id) {
+        Customer customer = customerRepository.getById(id);
+        List<Card> cards = customer.getCards();
+
+        HashMap<String, Double> myJson = new HashMap<>();
+
+        for (Card card : cards) {
+            if (card.getCardType().equals("CREDIT")){
+                double debtAmount = card.getCardDebt();
+                myJson.put(card.getCardType()+" CARD DEPT",debtAmount);
+            }
+        }
+        return myJson;
+    }
+
 }

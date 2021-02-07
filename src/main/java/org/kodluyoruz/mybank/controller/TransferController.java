@@ -5,6 +5,7 @@ import org.kodluyoruz.mybank.dto.TransferDto;
 import org.kodluyoruz.mybank.util.ExchangeRates;
 import org.kodluyoruz.mybank.entity.Transfer;
 import org.kodluyoruz.mybank.service.TransferService;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -34,8 +35,8 @@ public class TransferController {
 
     @PostMapping(value = "/iban")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void sendMoney(@RequestBody TransferDto transferDto, @RequestParam(value = "sender") String iban1, @RequestParam(value = "receiver") String iban2){
-            transferService.sendMoney(transferDto, iban1, iban2);
+    public Transfer sendMoney(@RequestBody TransferDto transferDto, @Param(value = "sender") String iban1, @Param(value = "receiver") String iban2){
+           return transferService.sendMoney(transferDto, iban1, iban2);
     }
 
 }

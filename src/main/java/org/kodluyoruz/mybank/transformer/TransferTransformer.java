@@ -5,6 +5,7 @@ import org.kodluyoruz.mybank.entity.Account;
 import org.kodluyoruz.mybank.entity.Transfer;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class TransferTransformer {
         transfer.setCurrency(transferDto.getCurrency());
         transfer.setAccounts(accounts);
         transfer.setAmount(transferDto.getAmount());
-        transfer.setDate(transferDto.getDate());
+        transfer.setDate(LocalDate.now());
         transfer.setSenderIban(transferDto.getSenderIban());
         transfer.setReceiverIban(transferDto.getReceiverIban());
     }

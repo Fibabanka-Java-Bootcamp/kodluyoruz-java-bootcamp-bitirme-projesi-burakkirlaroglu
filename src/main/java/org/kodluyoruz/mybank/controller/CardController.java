@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,5 +38,10 @@ public class CardController {
         return cardService.list(PageRequest.of(page,size)).stream()
                 .map(Card::toCardDto)
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping(value = "/debtamount/{id}")
+    public HashMap<String,Double> cardDebt(@PathVariable int id){
+        return cardService.findCardDept(id);
     }
 }

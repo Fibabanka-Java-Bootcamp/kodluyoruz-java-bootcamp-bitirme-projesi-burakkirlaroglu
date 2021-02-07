@@ -9,6 +9,7 @@ import org.kodluyoruz.mybank.repository.AccountRepository;
 import org.kodluyoruz.mybank.repository.TransferRepository;
 import org.kodluyoruz.mybank.service.TransferService;
 import org.kodluyoruz.mybank.transformer.TransferTransformer;
+import org.kodluyoruz.mybank.util.NumberEvents;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +17,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-
 @Service
 @RequiredArgsConstructor
-public class TransferServiceImp implements TransferService {
+public class TransferServiceImp extends NumberEvents implements TransferService {
 
     @Autowired
     private final RestTemplate restTemplate;
@@ -40,17 +40,14 @@ public class TransferServiceImp implements TransferService {
         return restTemplate.getForObject("https://api.exchangeratesapi.io/latest?base=TRY", ExchangeRates.class);
     }
 
-
     @Override
     public double usdRate() {
-        double result = exchangeRate().getRates().get("TRY") / exchangeRate().getRates().get("USD");
-        return result;
+        return exchangeRate().getRates().get("TRY") / exchangeRate().getRates().get("USD");
     }
 
     @Override
     public double eurRate() {
-        double result = exchangeRate().getRates().get("TRY") / exchangeRate().getRates().get("EUR");
-        return result;
+        return exchangeRate().getRates().get("TRY") / exchangeRate().getRates().get("EUR");
     }
 
     @Override
@@ -61,7 +58,7 @@ public class TransferServiceImp implements TransferService {
 
     @Override
     @Transactional(rollbackFor = NullPointerException.class)
-    public void sendMoney(TransferDto transferDto, String senderIban, String receiverIban) {
+    public Transfer sendMoney(TransferDto transferDto, String senderIban, String receiverIban) {
 
         try {
             Transfer transfer = transferTransformer.accountTransfer(transferDto);
@@ -70,16 +67,16 @@ public class TransferServiceImp implements TransferService {
             String accountType = transfer.getAccountType();
             senderIban = transfer.getSenderIban();
             receiverIban = transfer.getReceiverIban();
-            accountsTransfer(transfer, amount, senderIban, receiverIban);
+            toAccountsTransfer(transfer, amount, senderIban, receiverIban);
             Transfer transfer1 = new Transfer();
             saveTransfer(transfer1, amount, currency, accountType,senderIban,receiverIban);
+            return transfer;
         }catch (NullPointerException e){
             throw new NullPointerException("Null value!"+e);
         }
-
     }
 
-    public void saveTransfer(Transfer transfer, double amount, String currency, String accountType, String senderIban, String receiverIban){
+    private void saveTransfer(Transfer transfer, double amount, String currency, String accountType, String senderIban, String receiverIban){
         transfer.setAmount(amount);
         transfer.setCurrency(currency);
         transfer.setAccountType(accountType);
@@ -88,7 +85,7 @@ public class TransferServiceImp implements TransferService {
         transferRepository.save(transfer);
     }
 
-    public void accountsTransfer(Transfer transfer, double amount, String senderIban, String receiverIban){
+    private void toAccountsTransfer(Transfer transfer, double amount, String senderIban, String receiverIban){
 
         String euro = "EUR";
         String tl = "TRY";
@@ -97,7 +94,13 @@ public class TransferServiceImp implements TransferService {
         Account accountSend = transfer.getAccounts().get(0);
         Account accountTake = transfer.getAccounts().get(1);
 
-        if (senderIban.equals(accountSend.getIban()) & receiverIban.equals(accountTake.getIban())){
+        double forEurToTl = (double) Math.round((amount * eurRate()) * 100) / 100;
+        double forTlToEuro = (double) Math.round((amount / eurRate()) * 100) / 100;
+
+        double forUsdToTl = (double) Math.round((amount * usdRate()) * 100) / 100;
+        double forTlToUsd = (double) Math.round((amount / usdRate()) * 100) / 100;
+
+        if (senderIban.equals(accountSend.getIban()) & receiverIban.equals(accountTake.getIban()) & accountSend.getAccountType().equals("CHECKING")){
 
                 if (accountSend.getAccountType().equals(accountTake.getAccountType()) && accountSend.getCurrency().equals(accountTake.getCurrency())) {
                     accountSend.setBalance(accountSend.getBalance() - amount);
@@ -105,17 +108,17 @@ public class TransferServiceImp implements TransferService {
                 }
                 if (accountSend.getCurrency().equals(euro) & accountTake.getCurrency().equals(tl)){
                     accountSend.setBalance(accountSend.getBalance() - amount);
-                    accountTake.setBalance(accountTake.getBalance() + (amount * eurRate()));
+                    accountTake.setBalance(accountTake.getBalance() + forEurToTl);
                 }
                 else if (accountSend.getCurrency().equals(tl) & accountTake.getCurrency().equals(euro)){
                     accountSend.setBalance(accountSend.getBalance() - amount);
-                    accountTake.setBalance(accountTake.getBalance() + (amount / eurRate()));
+                    accountTake.setBalance(accountTake.getBalance() + forTlToEuro);
                 }else if (accountSend.getCurrency().equals(usd) & accountTake.getCurrency().equals(tl)){
                     accountSend.setBalance(accountSend.getBalance() - amount);
-                    accountTake.setBalance(accountTake.getBalance() + (amount * usdRate()));
+                    accountTake.setBalance(accountTake.getBalance() + forUsdToTl);
                 }else if (accountSend.getCurrency().equals(tl) & accountTake.getCurrency().equals(usd)){
                     accountSend.setBalance(accountSend.getBalance() - amount);
-                    accountTake.setBalance(accountTake.getBalance() + (amount / usdRate()));
+                    accountTake.setBalance(accountTake.getBalance() + forTlToUsd);
                 }else if (accountSend.getCurrency().equals(euro) & accountTake.getCurrency().equals(usd)){
                     double euroAmount = amount * (usdRate() / eurRate());
                     double usdAmount = amount * (eurRate() / usdRate());
@@ -126,12 +129,17 @@ public class TransferServiceImp implements TransferService {
                     double usdAmount = amount * (eurRate() / usdRate());
                     accountSend.setBalance(accountSend.getBalance() - usdAmount);
                     accountTake.setBalance(accountTake.getBalance() + euroAmount);
+
                 }
+        }else if (senderIban.equals(accountSend.getIban()) & receiverIban.equals(accountTake.getIban()) &
+                accountSend.getAccountType().equals("SAVING")){
 
-            accountRepository.save(accountSend);
-            accountRepository.save(accountTake);
+            throw new NumberFormatException("Maalesef birikim hesabından direk para transferi yapamazsınız");
+        }else {
+            throw new NumberFormatException("iban değerleri uyuşmuyor...");
         }
-
+        accountRepository.save(accountSend);
+        accountRepository.save(accountTake);
     }
 
 }
