@@ -34,4 +34,8 @@ public class Address {
     @JsonIgnore
     private Customer customer;
 
+    @Override
+    public String toString() {
+        return "";
+    }
 }

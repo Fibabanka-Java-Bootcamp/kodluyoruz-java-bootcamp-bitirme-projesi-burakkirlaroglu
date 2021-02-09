@@ -7,7 +7,9 @@ import org.kodluyoruz.mybank.dto.CardDto;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -24,9 +26,15 @@ public class Card {
 
     private String cardNo;
 
+    private double amount;
+
     private String cardType;
 
+    private String cardPassword;
+
     private double cardLimit;
+
+    private String expenses;
 
     private double cardDebt;
 
@@ -38,7 +46,6 @@ public class Card {
     private int ccv;
 
     @ManyToMany(mappedBy = "cards")
-    @JsonIgnore
     private List<Account> accounts;
 
     @ManyToOne
@@ -46,17 +53,5 @@ public class Card {
     @JsonIgnore
     private Customer customer;
 
-    public CardDto toCardDto(){
-        return CardDto.builder()
-                .id(this.id)
-                .cardNo(this.cardNo)
-                .cardType(this.cardType)
-                .cardLimit(this.cardLimit)
-                .expiredDate(this.expiredDate)
-                .ccv(this.ccv)
-                .createdDate(this.createdDate)
-                .cardDebt(this.cardDebt)
-                .build();
-    }
 }
 

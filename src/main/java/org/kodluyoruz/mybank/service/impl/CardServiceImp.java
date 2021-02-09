@@ -6,6 +6,7 @@ import org.kodluyoruz.mybank.entity.Customer;
 import org.kodluyoruz.mybank.repository.CardRepository;
 import org.kodluyoruz.mybank.repository.CustomerRepository;
 import org.kodluyoruz.mybank.service.CardService;
+import org.kodluyoruz.mybank.transformer.CardTransformer;
 import org.kodluyoruz.mybank.util.NumberEvents;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,9 @@ public class CardServiceImp extends NumberEvents implements CardService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private CardTransformer cardTransformer;
 
     @Override
     public Page<Card> list(Pageable pageable) {
@@ -69,6 +73,40 @@ public class CardServiceImp extends NumberEvents implements CardService {
             }
         }
         return myJson;
+    }
+
+    public Card sendMoneyForShop(int id, CardDto cardDto){
+
+        Customer customer = customerRepository.getById(id);
+
+        List<Card> cards = customer.getCards();
+
+        for (int i = 0; i < cards.size(); i++) {
+            Card card = customer.getCards().get(i);
+            double amount = cardDto.getAmount();
+            int ccv = cardDto.getCcv();
+            String cardNo = cardDto.getCardNo();
+            String expenses = cardDto.getExpenses();
+            toShoppingFromCard(card, amount, cardNo, ccv, expenses);
+        }
+
+        return cards.get(0);
+
+    }
+
+    private void toShoppingFromCard(Card card, double amount, String cardNo, int ccv, String expenses){
+
+        if (card.getCardNo().equals(cardNo) & card.getCcv() == ccv){
+            card.setAmount(amount);
+            if (card.getCardType().equals("CREDIT")){
+                card.setCardDebt(card.getCardDebt() + amount);
+            }
+            card.setExpenses(expenses);
+            card.setCardLimit(card.getCardLimit() - amount);
+            cardRepository.save(card);
+        }else{
+            System.out.println("yanlış kart no veya ccv");
+        }
     }
 
 }

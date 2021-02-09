@@ -14,4 +14,8 @@ public interface CardService {
     void addCart(int id, CardDto cardDto);
 
     HashMap<String,Double> findCardDept(int id);
+
+    Card sendMoneyForShop(int id, CardDto cardDto);
+
+
 }

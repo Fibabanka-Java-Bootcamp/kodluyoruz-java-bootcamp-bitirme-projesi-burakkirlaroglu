@@ -62,5 +62,10 @@ public class AccountServiceImp extends NumberEvents implements AccountService {
         customerRepository.save(customer);
     }
 
+    @Override
+    public void debtPaymentFromAccount(int id) {
+
+    }
+
 
 }

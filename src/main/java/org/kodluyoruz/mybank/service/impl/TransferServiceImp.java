@@ -129,11 +129,9 @@ public class TransferServiceImp extends NumberEvents implements TransferService 
                     double usdAmount = amount * (eurRate() / usdRate());
                     accountSend.setBalance(accountSend.getBalance() - usdAmount);
                     accountTake.setBalance(accountTake.getBalance() + euroAmount);
-
                 }
         }else if (senderIban.equals(accountSend.getIban()) & receiverIban.equals(accountTake.getIban()) &
                 accountSend.getAccountType().equals("SAVING")){
-
             throw new NumberFormatException("Maalesef birikim hesabından direk para transferi yapamazsınız");
         }else {
             throw new NumberFormatException("iban değerleri uyuşmuyor...");

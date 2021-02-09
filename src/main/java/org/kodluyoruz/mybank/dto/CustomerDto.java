@@ -1,6 +1,7 @@
 package org.kodluyoruz.mybank.dto;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.kodluyoruz.mybank.entity.Account;
 import org.kodluyoruz.mybank.entity.Address;
 import org.kodluyoruz.mybank.entity.Card;
@@ -33,6 +34,7 @@ public class CustomerDto {
 
     private String phone;
 
+    @CreationTimestamp
     private LocalDate createdDate;
 
     private Address address;

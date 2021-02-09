@@ -34,6 +34,7 @@ public class CustomerServiceImp implements CustomerService {
         customerDto.setId(customer.getId());
         customerDto.setAccounts(customerTransformer.toAccountDtoList(customer.getAccounts()));
         customerDto.setCards(customerTransformer.toCardDtoList(customer.getCards()));
+        customerDto.setCreatedDate(customer.getCreatedDate());
         return customerDto;
     }
 
@@ -76,7 +77,7 @@ public class CustomerServiceImp implements CustomerService {
 
     }
 
-    public boolean accountBalanceCheck(Customer customer){
+    private boolean accountBalanceCheck(Customer customer){
         for (int i = 0; i < customer.getAccounts().size(); i++) {
             Account account = customer.getAccounts().get(i);
             if (account.getBalance() > 0){
@@ -86,7 +87,7 @@ public class CustomerServiceImp implements CustomerService {
         return true;
     }
 
-    public boolean cardDebtCheck(Customer customer){
+    private boolean cardDebtCheck(Customer customer){
         for (int i = 0; i < customer.getCards().size(); i++) {
             Card card = customer.getCards().get(i);
             if (card.getCardDebt() > 0){

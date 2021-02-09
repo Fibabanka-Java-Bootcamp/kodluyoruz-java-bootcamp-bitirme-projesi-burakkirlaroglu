@@ -21,7 +21,13 @@ public class CardDto {
 
     private String cardType;
 
+    private double amount;
+
+    private String cardPassword;
+
     private double cardLimit;
+
+    private String expenses;
 
     private double cardDebt;
 
@@ -29,20 +35,9 @@ public class CardDto {
 
     private int ccv;
 
+    @CreationTimestamp
     private LocalDate createdDate;
 
-    private List<Account> accounts;
+    private List<AccountDto> accounts;
 
-    public Card toCard(){
-        return Card.builder()
-                .id(this.id)
-                .cardNo(this.cardNo)
-                .cardType(this.cardType)
-                .cardLimit(this.cardLimit)
-                .expiredDate(this.expiredDate)
-                .ccv(this.ccv)
-                .createdDate(this.createdDate)
-                .cardDebt(this.cardDebt)
-                .build();
-    }
 }

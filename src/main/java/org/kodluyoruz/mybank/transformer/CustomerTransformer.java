@@ -9,6 +9,7 @@ import org.kodluyoruz.mybank.entity.Customer;
 import org.kodluyoruz.mybank.util.NumberEvents;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,6 @@ public class CustomerTransformer extends NumberEvents {
         Customer customer = new Customer();
         customerCreate(accounts,customerDto,customer, cards);
         return customer;
-
     }
 
     private void customerCreate(List<Account> accounts, CustomerDto customerDto, Customer customer, List<Card> cards){
@@ -35,6 +35,7 @@ public class CustomerTransformer extends NumberEvents {
         customer.setTC(customerDto.getTC());
         customer.setPassword(customerDto.getPassword());
         customer.setPhone(customerDto.getPhone());
+        customer.setCreatedDate(LocalDate.now());
         customer.setCards(cards);
     }
 
@@ -64,6 +65,11 @@ public class CustomerTransformer extends NumberEvents {
             card.setCcv(ccvNo());
             card.setCardType(cardDto.getCardType());
             card.setCardDebt(cardDto.getCardDebt());
+            card.setExpenses(cardDto.getExpenses());
+            card.setAmount(cardDto.getAmount());
+            card.setCreatedDate(LocalDate.now());
+            card.setCardPassword(cardDto.getCardPassword());
+            card.setAccounts(toAccountList(customerDto.getAccounts())); //ve burası
             cards.add(card);
 
         }
@@ -79,10 +85,10 @@ public class CustomerTransformer extends NumberEvents {
                 .description(customer.getDescription())
                 .email(customer.getEmail())
                 .phone(customer.getPhone())
-                .createdDate(customer.getCreatedDate())
                 .address(customer.getAddress())
                 .cards(toCardDtoList(customer.getCards()))
                 .accounts(toAccountDtoList(customer.getAccounts()))
+                .createdDate(LocalDate.now())
                 .build();
     }
 
@@ -97,12 +103,31 @@ public class CustomerTransformer extends NumberEvents {
                 .build();
     }
 
+    private Account toAccount(AccountDto accountDto){
+        return Account.builder()
+                .id(accountDto.getId())
+                .balance(accountDto.getBalance())
+                .currency(accountDto.getCurrency())
+                .accountType(accountDto.getAccountType())
+                .iban(accountDto.getIban())
+                .createdDate(accountDto.getCreatedDate())
+                .build();
+    }
+
     public List<AccountDto> toAccountDtoList(List<Account> accounts){
         List<AccountDto> accountDtos = new ArrayList<>();
-        for (int i = 0; i < accounts.size(); i++) {
-            accountDtos.add(toAccountDto(accounts.get(i)));
+        for (Account account : accounts) {
+            accountDtos.add(toAccountDto(account));
         }
         return accountDtos;
+    }
+
+    public List<Account> toAccountList(List<AccountDto> accountDtos){
+        ;List<Account> accounts = new ArrayList<>();
+        for (AccountDto accountDto:accountDtos) {
+            accounts.add(toAccount(accountDto));
+        }
+        return accounts;
     }
 
 
@@ -114,15 +139,19 @@ public class CustomerTransformer extends NumberEvents {
                 .cardLimit(card.getCardLimit())
                 .expiredDate(card.getExpiredDate())
                 .ccv(card.getCcv())
-                .createdDate(card.getCreatedDate())
+                .createdDate(LocalDate.now())
                 .cardDebt(card.getCardDebt())
+                .amount(card.getAmount())
+                .expenses(card.getExpenses())
+                .cardPassword(card.getCardPassword())
+                .accounts(toAccountDtoList(card.getAccounts())) //bu kısımda veriyi buraya doğru gönderebilirsen sorun çözülecek.
                 .build();
     }
 
     public List<CardDto> toCardDtoList(List<Card> cards){
         List<CardDto> cardDtos = new ArrayList<>();
-        for (int i = 0; i < cards.size(); i++) {
-            cardDtos.add(toCardDto(cards.get(i)));
+        for (Card card : cards) {
+            cardDtos.add(toCardDto(card));
         }
         return cardDtos;
     }

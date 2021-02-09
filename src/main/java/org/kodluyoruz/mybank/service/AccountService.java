@@ -18,4 +18,6 @@ public interface AccountService {
 
     void addAccount(int id, AccountDto accountDto);
 
+    void debtPaymentFromAccount(int id);
+
 }

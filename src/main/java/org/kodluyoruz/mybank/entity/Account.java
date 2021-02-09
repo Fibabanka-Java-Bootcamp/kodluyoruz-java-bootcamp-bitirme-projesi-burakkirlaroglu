@@ -35,8 +35,6 @@ public class Account {
     private LocalDate createdDate;
 
     @ManyToMany
-    @JoinTable(joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id"),
-    inverseJoinColumns = @JoinColumn(name = "card_id", referencedColumnName = "id"))
     @JsonIgnore
     private List<Card> cards;
 

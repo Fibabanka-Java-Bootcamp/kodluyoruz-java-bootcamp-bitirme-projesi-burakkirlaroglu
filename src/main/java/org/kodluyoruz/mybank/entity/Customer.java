@@ -1,9 +1,7 @@
 package org.kodluyoruz.mybank.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.kodluyoruz.mybank.dto.CustomerDto;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -50,5 +48,8 @@ public class Customer {
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
 
-
+    @Override
+    public String toString() {
+        return "";
+    }
 }
