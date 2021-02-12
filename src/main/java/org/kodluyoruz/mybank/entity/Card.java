@@ -3,13 +3,10 @@ package org.kodluyoruz.mybank.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.kodluyoruz.mybank.dto.CardDto;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Builder
@@ -34,8 +31,6 @@ public class Card {
 
     private double cardLimit;
 
-    private String expenses;
-
     private double cardDebt;
 
     @CreationTimestamp
@@ -45,7 +40,11 @@ public class Card {
 
     private int ccv;
 
-    @ManyToMany(mappedBy = "cards")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "card_id", referencedColumnName = "id")
+    private List<Expenses> expenses;
+
+    @ManyToMany
     private List<Account> accounts;
 
     @ManyToOne
@@ -53,5 +52,10 @@ public class Card {
     @JsonIgnore
     private Customer customer;
 
+
+    @Override
+    public String toString() {
+        return "";
+    }
 }
 

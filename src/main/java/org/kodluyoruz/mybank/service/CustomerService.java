@@ -15,7 +15,7 @@ public interface CustomerService {
 
     Customer getById(int id);
 
-    Customer updateCustomer(CustomerDto customerDto, int customerId);
+    CustomerDto updateCustomer(CustomerDto customerDto, int customerId);
 
     void deleteCustomer(int id);
 }

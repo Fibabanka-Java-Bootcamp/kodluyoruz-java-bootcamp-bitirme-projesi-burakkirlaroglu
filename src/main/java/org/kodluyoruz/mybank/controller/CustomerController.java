@@ -1,19 +1,19 @@
 package org.kodluyoruz.mybank.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.kodluyoruz.mybank.dto.AccountDto;
-import org.kodluyoruz.mybank.entity.Account;
+
 import org.kodluyoruz.mybank.service.CustomerService;
 import org.kodluyoruz.mybank.dto.CustomerDto;
 import org.kodluyoruz.mybank.entity.Customer;
 import org.kodluyoruz.mybank.transformer.CustomerTransformer;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+
 import java.util.stream.Collectors;
 
 @Validated
@@ -47,8 +47,8 @@ public class CustomerController {
     }
 
     @PutMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public Customer updateCustomer(@PathVariable int id, @RequestBody CustomerDto customerDto){
+    @ResponseStatus(HttpStatus.OK)
+    public CustomerDto updateCustomer(@PathVariable int id, @RequestBody CustomerDto customerDto){
         return customerService.updateCustomer(customerDto, id);
     }
 
@@ -57,6 +57,5 @@ public class CustomerController {
     public void deleteCustomer(@PathVariable int id){
         customerService.deleteCustomer(id);
     }
-
 
 }

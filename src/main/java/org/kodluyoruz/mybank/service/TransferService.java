@@ -2,7 +2,7 @@ package org.kodluyoruz.mybank.service;
 
 
 import org.kodluyoruz.mybank.dto.TransferDto;
-import org.kodluyoruz.mybank.util.ExchangeRates;
+import org.kodluyoruz.mybank.external.ExchangeRates;
 import org.kodluyoruz.mybank.entity.Transfer;
 
 import java.util.List;

@@ -42,5 +42,4 @@ public class CustomerDto {
     private List<AccountDto> accounts;
 
     private List<CardDto> cards;
-
 }

@@ -1,5 +1,6 @@
 package org.kodluyoruz.mybank.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.kodluyoruz.mybank.dto.CustomerDto;
 import org.kodluyoruz.mybank.entity.Account;
 import org.kodluyoruz.mybank.entity.Card;
@@ -17,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CustomerServiceImp implements CustomerService {
-
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -50,7 +50,7 @@ public class CustomerServiceImp implements CustomerService {
 
     @Override
     @Transactional
-    public Customer updateCustomer(CustomerDto customerDto, int customerId) {
+    public CustomerDto updateCustomer(CustomerDto customerDto, int customerId) {
 
         Customer customer = customerRepository.getById(customerId);
 
@@ -63,7 +63,7 @@ public class CustomerServiceImp implements CustomerService {
 
         customerRepository.save(customer);
 
-        return customer;
+        return customerDto;
 
     }
 

@@ -6,7 +6,7 @@ import org.kodluyoruz.mybank.dto.CustomerDto;
 import org.kodluyoruz.mybank.entity.Account;
 import org.kodluyoruz.mybank.entity.Card;
 import org.kodluyoruz.mybank.entity.Customer;
-import org.kodluyoruz.mybank.util.NumberEvents;
+import org.kodluyoruz.mybank.external.NumberEvents;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -20,9 +20,9 @@ public class CustomerTransformer extends NumberEvents {
         List<Card> cards = new ArrayList<>();
         List<Account> accounts = new ArrayList<>();
         accountDtoCreate(accounts, customerDto);
-        cartDtoCreate(cards, customerDto);
         Customer customer = new Customer();
         customerCreate(accounts,customerDto,customer, cards);
+        cartDtoCreate(cards, customerDto, customer);
         return customer;
     }
 
@@ -54,7 +54,7 @@ public class CustomerTransformer extends NumberEvents {
         }
     }
 
-    private void cartDtoCreate(List<Card> cards, CustomerDto customerDto){
+    private void cartDtoCreate(List<Card> cards, CustomerDto customerDto, Customer customer){
         for (int i = 0; i < customerDto.getCards().size(); i++) {
 
             CardDto cardDto = customerDto.getCards().get(i);
@@ -69,14 +69,12 @@ public class CustomerTransformer extends NumberEvents {
             card.setAmount(cardDto.getAmount());
             card.setCreatedDate(LocalDate.now());
             card.setCardPassword(cardDto.getCardPassword());
-            card.setAccounts(toAccountList(customerDto.getAccounts())); //ve burası
+            card.setAccounts(customer.getAccounts());
             cards.add(card);
-
         }
     }
 
     public CustomerDto toCustomerDto(Customer customer){
-
         return CustomerDto.builder()
                 .id(customer.getId())
                 .fullName(customer.getFullName())
@@ -103,31 +101,12 @@ public class CustomerTransformer extends NumberEvents {
                 .build();
     }
 
-    private Account toAccount(AccountDto accountDto){
-        return Account.builder()
-                .id(accountDto.getId())
-                .balance(accountDto.getBalance())
-                .currency(accountDto.getCurrency())
-                .accountType(accountDto.getAccountType())
-                .iban(accountDto.getIban())
-                .createdDate(accountDto.getCreatedDate())
-                .build();
-    }
-
     public List<AccountDto> toAccountDtoList(List<Account> accounts){
         List<AccountDto> accountDtos = new ArrayList<>();
         for (Account account : accounts) {
             accountDtos.add(toAccountDto(account));
         }
         return accountDtos;
-    }
-
-    public List<Account> toAccountList(List<AccountDto> accountDtos){
-        ;List<Account> accounts = new ArrayList<>();
-        for (AccountDto accountDto:accountDtos) {
-            accounts.add(toAccount(accountDto));
-        }
-        return accounts;
     }
 
 
@@ -144,7 +123,7 @@ public class CustomerTransformer extends NumberEvents {
                 .amount(card.getAmount())
                 .expenses(card.getExpenses())
                 .cardPassword(card.getCardPassword())
-                .accounts(toAccountDtoList(card.getAccounts())) //bu kısımda veriyi buraya doğru gönderebilirsen sorun çözülecek.
+                .accounts(toAccountDtoList(card.getAccounts()))
                 .build();
     }
 

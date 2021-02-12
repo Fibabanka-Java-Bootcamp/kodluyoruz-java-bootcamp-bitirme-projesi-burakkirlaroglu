@@ -6,7 +6,7 @@ import org.kodluyoruz.mybank.entity.Customer;
 import org.kodluyoruz.mybank.repository.AccountRepository;
 import org.kodluyoruz.mybank.repository.CustomerRepository;
 import org.kodluyoruz.mybank.service.AccountService;
-import org.kodluyoruz.mybank.util.NumberEvents;
+import org.kodluyoruz.mybank.external.NumberEvents;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,13 +43,10 @@ public class AccountServiceImp extends NumberEvents implements AccountService {
     public void addAccount(int id, AccountDto accountDto) {
 
         Customer customer = customerRepository.getById(id);
-
         List<Account> accounts = customer.getAccounts();
-
         Account account = new Account();
 
         for (int i = 0; i < accounts.size(); i++) {
-
             account.setAccountType(accountDto.getAccountType());
             account.setBalance(accountDto.getBalance());
             account.setCurrency(accountDto.getCurrency());
@@ -58,13 +55,7 @@ public class AccountServiceImp extends NumberEvents implements AccountService {
             customer.setAccounts(accounts);
         }
         accounts.add(account);
-
         customerRepository.save(customer);
-    }
-
-    @Override
-    public void debtPaymentFromAccount(int id) {
-
     }
 
 

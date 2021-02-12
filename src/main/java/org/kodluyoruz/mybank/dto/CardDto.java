@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.kodluyoruz.mybank.entity.Account;
 import org.kodluyoruz.mybank.entity.Card;
+import org.kodluyoruz.mybank.entity.Expenses;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -27,7 +28,7 @@ public class CardDto {
 
     private double cardLimit;
 
-    private String expenses;
+    private List<Expenses> expenses;
 
     private double cardDebt;
 

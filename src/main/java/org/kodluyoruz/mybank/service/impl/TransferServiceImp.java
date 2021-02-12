@@ -3,14 +3,13 @@ package org.kodluyoruz.mybank.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.kodluyoruz.mybank.dto.TransferDto;
 import org.kodluyoruz.mybank.entity.Account;
-import org.kodluyoruz.mybank.util.ExchangeRates;
+import org.kodluyoruz.mybank.external.ExchangeRates;
 import org.kodluyoruz.mybank.entity.Transfer;
 import org.kodluyoruz.mybank.repository.AccountRepository;
 import org.kodluyoruz.mybank.repository.TransferRepository;
 import org.kodluyoruz.mybank.service.TransferService;
 import org.kodluyoruz.mybank.transformer.TransferTransformer;
-import org.kodluyoruz.mybank.util.NumberEvents;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.kodluyoruz.mybank.external.NumberEvents;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -21,16 +20,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TransferServiceImp extends NumberEvents implements TransferService {
 
-    @Autowired
+
     private final RestTemplate restTemplate;
 
-    @Autowired
+
     private final TransferTransformer transferTransformer;
 
-    @Autowired
+
     private final TransferRepository transferRepository;
 
-    @Autowired
+
     private final AccountRepository accountRepository;
 
 

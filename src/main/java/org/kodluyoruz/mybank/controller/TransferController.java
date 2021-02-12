@@ -2,7 +2,7 @@ package org.kodluyoruz.mybank.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.kodluyoruz.mybank.dto.TransferDto;
-import org.kodluyoruz.mybank.util.ExchangeRates;
+import org.kodluyoruz.mybank.external.ExchangeRates;
 import org.kodluyoruz.mybank.entity.Transfer;
 import org.kodluyoruz.mybank.service.TransferService;
 import org.springframework.data.repository.query.Param;

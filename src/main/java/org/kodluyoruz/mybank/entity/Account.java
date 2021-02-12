@@ -34,7 +34,7 @@ public class Account {
     @CreationTimestamp
     private LocalDate createdDate;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "accounts")
     @JsonIgnore
     private List<Card> cards;
 
@@ -60,8 +60,8 @@ public class Account {
                 .build();
     }
 
-
-
-
-
+    @Override
+    public String toString() {
+        return "";
+    }
 }
