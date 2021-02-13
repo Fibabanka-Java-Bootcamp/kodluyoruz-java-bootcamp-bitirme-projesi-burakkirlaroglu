@@ -1,5 +1,6 @@
 package org.kodluyoruz.mybank.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.kodluyoruz.mybank.dto.CardDto;
 import org.kodluyoruz.mybank.entity.Account;
 import org.kodluyoruz.mybank.entity.Card;
@@ -12,7 +13,9 @@ import org.kodluyoruz.mybank.external.NumberEvents;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -42,7 +45,7 @@ public class CardServiceImp extends NumberEvents implements CardService {
         }
     }
 
-    public boolean setNewCart(List<Card> cards, Card card, Customer customer, CardDto cardDto){
+    private boolean setNewCart(List<Card> cards, Card card, Customer customer, CardDto cardDto){
         List<Account> accounts = customer.getAccounts();
 
         for (int i = 0; i < cards.size(); i++) {
@@ -101,19 +104,20 @@ public class CardServiceImp extends NumberEvents implements CardService {
 
     @Override
     public Card debtPaymentFromCashpoint(int id, CardDto cardDto) {
-        Card card = cardRepository.getById(id);
 
-        if (card.getCardPassword().equals(cardDto.getCardPassword())){
-            double amount = cardDto.getAmount();
-            card.setCardLimit(card.getCardLimit() + amount);
-            card.setCardDebt(card.getCardDebt() - amount);
+        try {
+            Card card = cardRepository.getById(id);
 
-            cardRepository.save(card);
-        }else {
-            System.out.println("Kart şifresi yanlış");
+            if (card.getCardPassword().equals(cardDto.getCardPassword())){
+                double amount = cardDto.getAmount();
+                card.setCardLimit(card.getCardLimit() + amount);
+                card.setCardDebt(card.getCardDebt() - amount);
+                cardRepository.save(card);
+            }
+            return card;
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,"Card password is wrong.");
         }
-
-        return card;
     }
 
     @Override
@@ -142,43 +146,44 @@ public class CardServiceImp extends NumberEvents implements CardService {
 
     private void toShoppingFromCard(Card card, double amount, String cardNo, int ccv, String pName, String pType){
 
-        List<Expenses> expenses = card.getExpenses();
-        if (card.getCardNo().equals(cardNo) & card.getCcv() == ccv){
-            card.setAmount(amount);
-            Expenses expensesInfo = new Expenses();
-            if (card.getCardType().equals("CREDIT")){
+        try {
+            List<Expenses> expenses = card.getExpenses();
+            if (card.getCardNo().equals(cardNo) & card.getCcv() == ccv){
+                card.setAmount(amount);
+                Expenses expensesInfo = new Expenses();
+                if (card.getCardType().equals("CREDIT")){
 
-                for (int i = 0; i < expenses.size(); i++) {
+                    for (int i = 0; i < expenses.size(); i++) {
 
-                    expensesInfo.setPrice(amount);
-                    expensesInfo.setProductName(pName);
-                    expensesInfo.setProductType(pType);
+                        expensesInfo.setPrice(amount);
+                        expensesInfo.setProductName(pName);
+                        expensesInfo.setProductType(pType);
+                    }
+
+                    card.setCardDebt(card.getCardDebt() + amount);
+                    card.setCardLimit(card.getCardLimit() - amount);
+
+                    expenses.add(expensesInfo);
+                }
+                else if (card.getCardType().equals("PREPAID")){
+
+                    for (int i = 0; i < expenses.size(); i++) {
+
+                        expensesInfo.setPrice(amount);
+                        expensesInfo.setProductName(pName);
+                        expensesInfo.setProductType(pType);
+                    }
+
+                    card.setCardLimit(card.getCardLimit() - amount);
+                    expenses.add(expensesInfo);
                 }
 
-                card.setCardDebt(card.getCardDebt() + amount);
-                card.setCardLimit(card.getCardLimit() - amount);
+                card.setExpenses(expenses);
 
-                expenses.add(expensesInfo);
+                cardRepository.save(card);
             }
-            else if (card.getCardType().equals("PREPAID")){
-
-                for (int i = 0; i < expenses.size(); i++) {
-
-                    expensesInfo.setPrice(amount);
-                    expensesInfo.setProductName(pName);
-                    expensesInfo.setProductType(pType);
-                }
-
-                card.setCardLimit(card.getCardLimit() - amount);
-                expenses.add(expensesInfo);
-            }
-
-            card.setExpenses(expenses);
-
-            cardRepository.save(card);
-        }else{
-            System.out.println("yanlış kart no veya ccv");
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,"Card no or Ccv are wrong.");
         }
     }
-
 }

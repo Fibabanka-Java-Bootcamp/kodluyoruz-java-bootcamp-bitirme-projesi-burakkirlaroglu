@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -31,31 +32,52 @@ public class CustomerController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CustomerDto create(@RequestBody CustomerDto customerDto){
-        return customerService.createCustomer(customerDto);
+        try {
+            return customerService.createCustomer(customerDto);
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Customer is not created");
+        }
+
     }
 
     @GetMapping(params = {"page","size"})
     public List<CustomerDto> list(@RequestParam("page") int page, @RequestParam("size") int size){
-        return customerService.listAll(PageRequest.of(page, size)).stream()
-                .map(customerTransformer::toCustomerDto)
-                .collect(Collectors.toList());
+        try {
+            return customerService.listAll(PageRequest.of(page, size)).stream()
+                    .map(customerTransformer::toCustomerDto)
+                    .collect(Collectors.toList());
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no customer in database");
+        }
     }
 
     @GetMapping(value = "/{id}")
     public Customer customerById(@PathVariable int id){
-        return customerService.getById(id);
+        try {
+            return customerService.getById(id);
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found with id"+id);
+        }
     }
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public CustomerDto updateCustomer(@PathVariable int id, @RequestBody CustomerDto customerDto){
-        return customerService.updateCustomer(customerDto, id);
+        try {
+            return customerService.updateCustomer(customerDto, id);
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Customer is not updated with id "+id);
+        }
     }
 
     @DeleteMapping(value = "delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCustomer(@PathVariable int id){
-        customerService.deleteCustomer(id);
+        try {
+            customerService.deleteCustomer(id);
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer is not deleted with id"+id);
+        }
     }
 
 }

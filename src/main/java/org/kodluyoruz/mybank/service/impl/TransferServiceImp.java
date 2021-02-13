@@ -10,9 +10,11 @@ import org.kodluyoruz.mybank.repository.TransferRepository;
 import org.kodluyoruz.mybank.service.TransferService;
 import org.kodluyoruz.mybank.transformer.TransferTransformer;
 import org.kodluyoruz.mybank.external.NumberEvents;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -56,7 +58,7 @@ public class TransferServiceImp extends NumberEvents implements TransferService 
 
 
     @Override
-    @Transactional(rollbackFor = NullPointerException.class)
+    @Transactional(rollbackFor = ResponseStatusException.class)
     public Transfer sendMoney(TransferDto transferDto, String senderIban, String receiverIban) {
 
         try {
@@ -71,7 +73,7 @@ public class TransferServiceImp extends NumberEvents implements TransferService 
             saveTransfer(transfer1, amount, currency, accountType,senderIban,receiverIban);
             return transfer;
         }catch (NullPointerException e){
-            throw new NullPointerException("Null value!"+e);
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,"Transfer was not completed");
         }
     }
 
@@ -131,9 +133,9 @@ public class TransferServiceImp extends NumberEvents implements TransferService 
                 }
         }else if (senderIban.equals(accountSend.getIban()) & receiverIban.equals(accountTake.getIban()) &
                 accountSend.getAccountType().equals("SAVING")){
-            throw new NumberFormatException("Maalesef birikim hesabından direk para transferi yapamazsınız");
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "You can not send money from saving account");
         }else {
-            throw new NumberFormatException("iban değerleri uyuşmuyor...");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Iban values conflicted");
         }
         accountRepository.save(accountSend);
         accountRepository.save(accountTake);

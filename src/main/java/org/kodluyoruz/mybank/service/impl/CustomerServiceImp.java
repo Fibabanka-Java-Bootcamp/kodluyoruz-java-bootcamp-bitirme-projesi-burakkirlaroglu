@@ -1,6 +1,5 @@
 package org.kodluyoruz.mybank.service.impl;
 
-import lombok.RequiredArgsConstructor;
 import org.kodluyoruz.mybank.dto.CustomerDto;
 import org.kodluyoruz.mybank.entity.Account;
 import org.kodluyoruz.mybank.entity.Card;
@@ -11,9 +10,10 @@ import org.kodluyoruz.mybank.transformer.CustomerTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.web.server.ResponseStatusException;
 
 
 @Service
@@ -74,14 +74,13 @@ public class CustomerServiceImp implements CustomerService {
         if (accountBalanceCheck(customer) & cardDebtCheck(customer)){
             customerRepository.deleteById(id);
         }
-
     }
 
     private boolean accountBalanceCheck(Customer customer){
         for (int i = 0; i < customer.getAccounts().size(); i++) {
             Account account = customer.getAccounts().get(i);
             if (account.getBalance() > 0){
-                throw new NullPointerException(customer.getFullName() +  "Kullanıcısının Bakiyesinde para var");
+                throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Customer has money in her/him account");
             }
         }
         return true;
@@ -91,11 +90,9 @@ public class CustomerServiceImp implements CustomerService {
         for (int i = 0; i < customer.getCards().size(); i++) {
             Card card = customer.getCards().get(i);
             if (card.getCardDebt() > 0){
-                throw new NullPointerException(customer.getFullName() +  "Kullanıcısının Borcu var");
+                throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Customer has card debt");
             }
         }
         return true;
     }
-
-
 }

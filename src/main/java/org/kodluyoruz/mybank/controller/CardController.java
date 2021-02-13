@@ -39,10 +39,10 @@ public class CardController {
         }catch (Exception e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Card is not created for id"+id);
         }
-
     }
 
     @GetMapping(params = {"page","size"})
+    @ResponseStatus(value = HttpStatus.OK)
     public List<CardDto> listCard(@RequestParam("page") int page, @RequestParam("size") int size){
         try {
             return cardService.list(PageRequest.of(page,size)).stream()
@@ -55,6 +55,7 @@ public class CardController {
     }
 
     @GetMapping(value = "/debtamount/{id}")
+    @ResponseStatus(value = HttpStatus.OK)
     public HashMap<String,Double> cardDebt(@PathVariable int id){
         try {
             return cardService.findAllCardDept(id);
@@ -65,6 +66,7 @@ public class CardController {
     }
 
     @PutMapping(value = "/shop/{id}")
+    @ResponseStatus(value = HttpStatus.CREATED)
     public Card shoppingWithCard(@RequestBody CardDto cardDto, @PathVariable int id){
         try {
             return cardService.sendMoneyForShop(id, cardDto);
@@ -75,6 +77,7 @@ public class CardController {
     }
 
     @PutMapping(value = "/carddebtpay/{id}")
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
     public Card payCardDebt(@RequestBody CardDto cardDto, @PathVariable int id){
         try {
             return cardService.debtPaymentFromAccount(id, cardDto);
@@ -85,6 +88,7 @@ public class CardController {
     }
 
     @PutMapping(value = "/cashomat/{id}")
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
     public Card PayCardDebtFromCashpoint(@RequestBody CardDto cardDto, @PathVariable int id){
         try {
             return cardService.debtPaymentFromCashpoint(id, cardDto);
@@ -94,7 +98,8 @@ public class CardController {
 
     }
 
-    @GetMapping(value = "/extre/{id}")
+    @GetMapping(value = "/ekstre/{id}")
+    @ResponseStatus(value = HttpStatus.OK)
     public List<Expenses> cardExtre(@PathVariable int id){
         try {
             return cardService.listExtre(id);

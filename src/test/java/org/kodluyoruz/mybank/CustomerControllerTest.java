@@ -1,34 +1,19 @@
 package org.kodluyoruz.mybank;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import org.junit.runner.RunWith;
-import org.kodluyoruz.mybank.controller.CustomerController;
 import org.kodluyoruz.mybank.dto.AccountDto;
 import org.kodluyoruz.mybank.dto.CardDto;
 import org.kodluyoruz.mybank.dto.CustomerDto;
-import org.kodluyoruz.mybank.entity.Account;
-import org.kodluyoruz.mybank.entity.Card;
 import org.kodluyoruz.mybank.entity.Customer;
 import org.kodluyoruz.mybank.repository.CustomerRepository;
-import org.kodluyoruz.mybank.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-        import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.junit.jupiter.api.Test;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;

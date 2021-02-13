@@ -1,7 +1,6 @@
 package org.kodluyoruz.mybank.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.kodluyoruz.mybank.config.GlobalExceptionHandler;
 import org.kodluyoruz.mybank.dto.AccountDto;
 import org.kodluyoruz.mybank.entity.Account;
 import org.kodluyoruz.mybank.service.AccountService;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller

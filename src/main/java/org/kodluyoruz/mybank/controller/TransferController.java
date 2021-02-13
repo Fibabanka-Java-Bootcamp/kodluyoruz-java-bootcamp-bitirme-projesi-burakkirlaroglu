@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -29,14 +30,23 @@ public class TransferController {
 
 
     @GetMapping
+    @ResponseStatus(value = HttpStatus.OK)
     public List<Transfer> getTransferDetails(){
-        return transferService.findAll();
+        try{
+            return transferService.findAll();
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no transaction");
+        }
     }
 
     @PostMapping(value = "/iban")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Transfer sendMoney(@RequestBody TransferDto transferDto, @Param(value = "sender") String iban1, @Param(value = "receiver") String iban2){
-           return transferService.sendMoney(transferDto, iban1, iban2);
+        try {
+            return transferService.sendMoney(transferDto, iban1, iban2);
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Send money process is not completed from "+iban1+" to "+iban2);
+        }
     }
 
 }
