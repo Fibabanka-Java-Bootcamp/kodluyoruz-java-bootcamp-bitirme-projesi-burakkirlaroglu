@@ -61,7 +61,6 @@ public class TransferServiceImp extends NumberEvents implements TransferService 
     @Transactional(rollbackFor = ResponseStatusException.class)
     public Transfer sendMoney(TransferDto transferDto, String senderIban, String receiverIban) {
 
-        try {
             Transfer transfer = transferTransformer.accountTransfer(transferDto);
             double amount = transfer.getAmount();
             String currency = transfer.getCurrency();
@@ -72,9 +71,6 @@ public class TransferServiceImp extends NumberEvents implements TransferService 
             Transfer transfer1 = new Transfer();
             saveTransfer(transfer1, amount, currency, accountType,senderIban,receiverIban);
             return transfer;
-        }catch (NullPointerException e){
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,"Transfer was not completed");
-        }
     }
 
     private void saveTransfer(Transfer transfer, double amount, String currency, String accountType, String senderIban, String receiverIban){
@@ -134,8 +130,6 @@ public class TransferServiceImp extends NumberEvents implements TransferService 
         }else if (senderIban.equals(accountSend.getIban()) & receiverIban.equals(accountTake.getIban()) &
                 accountSend.getAccountType().equals("SAVING")){
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "You can not send money from saving account");
-        }else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Iban values conflicted");
         }
         accountRepository.save(accountSend);
         accountRepository.save(accountTake);

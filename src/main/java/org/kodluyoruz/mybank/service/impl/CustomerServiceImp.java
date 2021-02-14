@@ -60,6 +60,7 @@ public class CustomerServiceImp implements CustomerService {
         customer.setEmail(customerDto.getEmail());
         customer.setTC(customerDto.getTC());
         customer.setPhone(customerDto.getPhone());
+        customer.setAddress(customerDto.getAddress());
 
         customerRepository.save(customer);
 

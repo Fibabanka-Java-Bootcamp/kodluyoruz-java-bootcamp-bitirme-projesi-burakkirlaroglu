@@ -1,6 +1,6 @@
 # Fibabanka Java Bootcamp Bitirme Projesi
 
-![money transfer](money_transfer.jpg)
+![money transfer](figures/money_transfer.jpg)
 
 Bu bitirme projesi kapsamında bootcamp katılımcılarının bir online bankacılık sisteminin backend servislerini yazmaları 
 beklenmektedir. Proje kapsamında beklenen minimum fonksiyonlar ve teknik ihtiyaçlar aşağıda listelenmiştir.
@@ -78,3 +78,15 @@ eklenmelidir.
 * Swagger Eklendi
 * Hata durumları eklendi
 * Testler eklendi
+
+### Tablolar ve Genel Görünüm
+
+![money transfer](figures/Diagram.png)
+
+### İlişkiler
+
+![money transfer](figures/Relationships.png)
+
+### API url
+
+![money transfer](figures/apiurls.png)
